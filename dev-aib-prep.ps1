@@ -33,25 +33,32 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+Write-Host "Creating new VHD at $Path"
 New-VHD -Path $Path -SizeBytes 100GB -Dynamic -ErrorAction Stop
+Write-Host "VHD created, mounting..."
 $diskImage = Mount-DiskImage -ImagePath $Path -PassThru
 
+Write-Host "VHD mounted, initializing..."
 # Get the disk object
 $disk = $diskImage | Get-Disk -ErrorAction Stop
 
 # Initialize the disk
 $disk | Initialize-Disk -PartitionStyle MBR -ErrorAction Stop
 
+Write-Host "Disk initialized, creating partition..."
 # Create a new partition on the disk
 $partition = $disk | New-Partition -UseMaximumSize -ErrorAction Stop
 
+Write-Host "Partition created, assigning drive letter $DriveLetter"
 # Assign a drive letter to the partition
 $partition | Set-Partition -NewDriveLetter $DriveLetter -ErrorAction Stop
 
+Write-Host "Drive letter assigned, formatting as Dev Drive..."
 # format as a dev drive, output the result
 format ${DriveLetter}: /devdrv /q /y /v:DevDrive
 fsutil devdrv query ${DriveLetter}:
 
+Write-Host "Dev Drive formatted, creating packages folders and setting machine env vars..."
 # create the various package folders and set their environment variables
 mkdir ${DriveLetter}:\packages\npm
 setx /M npm_config_cache ${DriveLetter}:\packages\npm
@@ -66,19 +73,38 @@ setx /M CARGO_HOME ${DriveLetter}:\packages\cargo
 mkdir ${DriveLetter}:\packages\maven
 setx /M MAVEN_OPTS "-Dmaven.repo.local=${DriveLetter}:\packages\maven %MAVEN_OPTS%"
 
+Write-Host "Installing software via Chocolatey..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
+Write-Host "Installing Notepad++"
 choco install notepadplusplus -y
+Write-Host "Installing Postman"
 choco install postman -y
+Write-Host "Installing VS Code"
 choco install vscode -y
+Write-Host "Installing Azure CLI"
 choco install azure-cli -y
+Write-Host "Installing GPG4Win"
 choco install gpg4win -y
+Write-Host "Installing 7Zip"
 choco install 7zip -y
+Write-Host "Installing GitHub CLI"
 choco install github-cli -y
+Write-Host "Installing Powershell Core"
 choco install powershell-core -y
+Write-Host "Installing Git Credential Manager"
 choco install git-credential-manager -y
+Write-Host "Installing Docker Desktop"
 choco install docker-desktop -y
+Write-Host "Installing Windows Powertoys"
 choco install powertoys -y
+Write-Host "Installing Microsoft Azure Storage Explorer"
 choco install microsoftazurestorageexplorer -y
+Write-Host "Installing Python 3"
 choco install python3 -y
+Write-Host "Installing Go"
 choco install golang -y
+Write-Host "Installing Terraform"
+choco install terraform -y
+Write-Host "Installing Bicep"
+choco install bicep -y
