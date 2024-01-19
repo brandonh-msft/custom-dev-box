@@ -16,11 +16,11 @@ choco install gpg4win -y
 Write-Host "Installing 7Zip"
 choco install 7zip -y
 Write-Host "Installing GitHub CLI"
-choco install github-cli -y
+choco install gh -y
 Write-Host "Installing Powershell Core"
 choco install powershell-core -y
 Write-Host "Installing Git Credential Manager"
-choco install git-credential-manager -y
+choco install git-credential-manager-for-windows -y
 Write-Host "Installing Docker Desktop"
 choco install docker-desktop -y
 Write-Host "Installing Windows Powertoys"
