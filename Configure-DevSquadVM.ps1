@@ -14,3 +14,6 @@ Write-Host "Mounting Azure Files 'software' share"
 
 Write-Host "Installing tools"
 ./Install-Tools.ps1
+
+Write-Host "Removing things"
+./Remove-Things.ps1
