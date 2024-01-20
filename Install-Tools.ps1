@@ -35,7 +35,7 @@ Write-Host "Installing Terraform"
 choco install terraform -y
 Write-Host "Installing Bicep"
 choco install bicep -y
-Write-Host "Installing Office"
-choco install office365business -y
-Write-Host "Installing Teams"
-choco install Microsoft-teams -y
+# Write-Host "Installing Office"
+# choco install office365business -y
+# Write-Host "Installing Teams"
+# choco install Microsoft-teams -y
