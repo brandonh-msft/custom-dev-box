@@ -13,7 +13,7 @@ Creates a new dev drive and mounts it then sets up the various package folders a
 param(
 [Parameter(HelpMessage="Path to the VHD file to create")]
 [ValidateScript({
-    if ([string]::IsNullOrEmpty($_.Trim()))
+    if ([string]::IsNullOrWhiteSpace($_.Trim()))
     {
         throw "Path cannot be empty."
     } else {
@@ -22,7 +22,7 @@ param(
 })][string] $Path="c:\devdrive.vhdx", # Path to the VHD file to create
 [Parameter(HelpMessage="Drive letter to mount the new VHD to")]
 [ValidateScript({
-    if ([string]::IsNullOrEmpty($_.Trim()))
+    if ([string]::IsNullOrWhiteSpace($_.Trim()))
     {
         throw "DriveLetter cannot be empty."
     } else {
