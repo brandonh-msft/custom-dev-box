@@ -1,19 +1,19 @@
 param([String]$azureFilesKey)
 
 Write-Host "Applying Timezone Redirecting settings"
-./Set-TimezoneRedirection.ps1
+& $PSScriptRoot\Set-TimezoneRedirection.ps1
 
 Write-Host "Applying Windows Optimizations"
-./Set-WindowsOptimization -Optimizations 'WindowsMediaPlayer','ScheduledTasks','DefaultUserSettings','Autologgers','Services','NetworkOptimizations','LGPO','DiskCleanup','Edge','RemoveLegacyIE'
+& $PSScriptRoot\Set-WindowsOptimization -Optimizations 'WindowsMediaPlayer','ScheduledTasks','DefaultUserSettings','Autologgers','Services','NetworkOptimizations','LGPO','DiskCleanup','Edge','RemoveLegacyIE'
 
 Write-Host "Creating DevDrive"
-./Create-DevDrive.ps1
+& $PSScriptRoot\Create-DevDrive.ps1
 
 Write-Host "Mounting Azure Files 'software' share"
-./Mount-AzureFiles.ps1 -account squadstorage -share software -key $azureFilesKey
+& $PSScriptRoot\Mount-AzureFiles.ps1 -account squadstorage -share software -key $azureFilesKey
 
 Write-Host "Installing tools"
-./Install-Tools.ps1
+& $PSScriptRoot\Install-Tools.ps1
 
 Write-Host "Removing things"
-./Remove-Things.ps1
+& $PSScriptRoot\Remove-Things.ps1
