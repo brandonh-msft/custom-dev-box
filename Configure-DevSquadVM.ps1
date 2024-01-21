@@ -17,3 +17,6 @@ Write-Host "Installing tools"
 
 Write-Host "Removing things"
 & $PSScriptRoot\Remove-Things.ps1
+
+Write-Host "Removing pinned things"
+& $PSScriptRoot\Unpin-App.ps1 "Microsoft Store"
