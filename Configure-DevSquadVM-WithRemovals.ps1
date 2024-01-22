@@ -14,3 +14,9 @@ Write-Host "Mounting Azure Files 'software' share"
 
 Write-Host "Installing tools"
 & $PSScriptRoot\Install-Tools.ps1
+
+Write-Host "Removing things"
+& $PSScriptRoot\Remove-Things.ps1
+
+Write-Host "Removing pinned things"
+& $PSScriptRoot\Unpin-App.ps1 "Microsoft Store"
