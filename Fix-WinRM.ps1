@@ -7,9 +7,13 @@ if([environment]::OSVersion.version.Major -ge 6) {
   $connections = $networkListManager.GetNetworkConnections()
 
   $connections |foreach {
-  	Write-Host $_.GetNetwork().GetName()"category was previously set to"$_.GetNetwork().GetCategory()
-  	$_.GetNetwork().SetCategory(1)
-  	Write-Host $_.GetNetwork().GetName()"changed to category"$_.GetNetwork().GetCategory()
+    try{
+        Write-Host $_.GetNetwork().GetName()"category was previously set to"$_.GetNetwork().GetCategory()
+        $_.GetNetwork().SetCategory(1)
+        Write-Host $_.GetNetwork().GetName()"changed to category"$_.GetNetwork().GetCategory()
+    }
+    catch {
+    }
   }
 }
 
