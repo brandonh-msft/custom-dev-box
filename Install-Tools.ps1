@@ -37,7 +37,3 @@ choco install bicep -y -f -r --no-progress --ignoredetectedreboot
 # choco install office365business -y
 # Write-Host "Installing Teams"
 # choco install Microsoft-teams -y
-
-# These installed as User *only* so we have to skip them during VHD init
-# Write-Host "Installing Postman"
-# choco install postman -y -f -r --no-progress --ignoredetectedreboot --pin

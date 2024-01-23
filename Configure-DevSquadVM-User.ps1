@@ -1,6 +1,3 @@
-Write-Host "Creating DevDrive"
-& $PSScriptRoot\Create-DevDrive.ps1
-
 Write-Host "Mounting Azure Files 'software' share"
 & $PSScriptRoot\Mount-AzureFiles.ps1 -account squadstorage -share software -key $azureFilesKey
 

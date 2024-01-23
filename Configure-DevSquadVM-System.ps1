@@ -12,3 +12,6 @@ Write-Host "Installing tools"
 # # Per https://github.com/hashicorp/packer/issues/4567
 # Write-Host "Applying WinRM Fixes"
 # & $PSScriptRoot\Fix-WinRM.ps1
+
+Write-Host "Creating DevDrive"
+& $PSScriptRoot\Create-DevDrive.ps1
