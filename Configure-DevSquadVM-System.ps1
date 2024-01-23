@@ -15,3 +15,6 @@ Write-Host "Installing tools"
 
 Write-Host "Creating DevDrive"
 & $PSScriptRoot\Create-DevDrive.ps1
+
+Write-Host "Configuring Scheduled Tasks"
+& $PSScriptRoot\Configure-ScheduledTasks.ps1

@@ -1,6 +1,3 @@
-Write-Host "Mounting Azure Files 'software' share"
-& $PSScriptRoot\Mount-AzureFiles.ps1 -account squadstorage -share software -key $azureFilesKey
-
 Write-Host "Installing Postman"
 choco install postman -y -f -r --no-progress --ignoredetectedreboot --pin
 
