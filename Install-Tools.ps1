@@ -5,8 +5,6 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 Write-Host "Installing Notepad++"
 choco install notepadplusplus -y -f -r --no-progress --ignoredetectedreboot --pin
-Write-Host "Installing Postman"
-choco install postman -y -f -r --no-progress --ignoredetectedreboot --pin
 Write-Host "Installing VS Code"
 choco install vscode -y -f -r --no-progress --ignoredetectedreboot --pin
 Write-Host "Installing Azure CLI"
@@ -39,3 +37,7 @@ choco install bicep -y -f -r --no-progress --ignoredetectedreboot
 # choco install office365business -y
 # Write-Host "Installing Teams"
 # choco install Microsoft-teams -y
+
+# These installed as User *only* so we have to skip them during VHD init
+# Write-Host "Installing Postman"
+# choco install postman -y -f -r --no-progress --ignoredetectedreboot --pin
