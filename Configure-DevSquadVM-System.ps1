@@ -9,6 +9,6 @@ Write-Host "Applying Windows Optimizations"
 Write-Host "Installing tools"
 & $PSScriptRoot\Install-Tools.ps1
 
-# Per https://github.com/hashicorp/packer/issues/4567
-Write-Host "Applying WinRM Fixes"
-& $PSScriptRoot\Fix-WinRM.ps1
+# # Per https://github.com/hashicorp/packer/issues/4567
+# Write-Host "Applying WinRM Fixes"
+# & $PSScriptRoot\Fix-WinRM.ps1
