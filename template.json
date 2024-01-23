@@ -32,7 +32,7 @@
         "sku_name": {
             "defaultValue": "Windows-DevReady",
             "type": "string"
-        },
+        }
     },
     "resources": [
         {
@@ -118,8 +118,7 @@
                     },
                     {
                         "inline": [
-                            "c:\\scripts\\Configure-DevSquadVM-AdminUser.ps1",
-                            "c:\\scripts\\Unpin-App.ps1 \"Microsoft Store\""
+                            "c:\\scripts\\Configure-DevSquadVM-AdminUser.ps1"
                         ],
                         "name": "configure vm (admin)",
                         "runAsSystem": false,
