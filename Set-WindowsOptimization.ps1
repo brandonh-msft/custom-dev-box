@@ -127,7 +127,7 @@ PROCESS {
     }
     #endregion
 
-     #region Customize Default User Profile
+    #region Customize Default User Profile
 
     # Apply appearance customizations to default user registry hive, then close hive file
     If ($Optimizations -contains "DefaultUserSettings" -or $Optimizations -contains "All")
@@ -203,7 +203,7 @@ PROCESS {
     }
     #endregion
 
-     #region Disable Windows Traces
+    #region Disable Windows Traces
     If ($Optimizations -contains "AutoLoggers" -or $Optimizations -contains "All")
     {
         $AutoLoggersUrl = "https://raw.githubusercontent.com/The-Virtual-Desktop-Team/Virtual-Desktop-Optimization-Tool/main/2009/ConfigurationFiles/Autologgers.Json"
@@ -247,7 +247,6 @@ PROCESS {
     }
     #endregion
                    
-
     #region Disable Services
     If ($Optimizations -contains "Services" -or $Optimizations -contains "All")
     {
@@ -368,7 +367,7 @@ PROCESS {
     }
     #endregion
 
-       #region Local Group Policy Settings
+    #region Local Group Policy Settings
     # - This code does not:
     #   * set a lock screen image.
     #   * change the "Root Certificates Update" policy.
@@ -516,7 +515,7 @@ PROCESS {
 
     #endregion
 
-    #region Disk Cleanup
+     #region Disk Cleanup
     # Delete not in-use files in locations C:\Windows\Temp and %temp%
     # Also sweep and delete *.tmp, *.etl, *.evtx, *.log, *.dmp, thumbcache*.db (not in use==not needed)
     # 5/18/20: Removing Disk Cleanup and moving some of those tasks to the following manual cleanup

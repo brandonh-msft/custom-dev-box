@@ -115,19 +115,6 @@
                             0,
                             1
                         ]
-                    },
-                    {
-                        "inline": [
-                            "c:\\scripts\\Configure-DevSquadVM-User.ps1"
-                        ],
-                        "name": "configure vm (user)",
-                        "runAsSystem": false,
-                        "runElevated": false,
-                        "type": "PowerShell",
-                        "validExitCodes": [
-                            0,
-                            1
-                        ]
                     }
                 ],
                 "optimize": {

@@ -9,12 +9,11 @@ Write-Host "Applying Windows Optimizations"
 Write-Host "Installing tools"
 & $PSScriptRoot\Install-Tools.ps1
 
-# # Per https://github.com/hashicorp/packer/issues/4567
-# Write-Host "Applying WinRM Fixes"
-# & $PSScriptRoot\Fix-WinRM.ps1
-
 Write-Host "Creating DevDrive"
 & $PSScriptRoot\Create-DevDrive.ps1
 
+Write-Host "Mounting Azure Files share"
+& $PSScriptRoot\Mount-AzureFiles.ps1 -account squadstorage -share software -key $azureFilesKey
+
 Write-Host "Configuring Scheduled Tasks"
-& $PSScriptRoot\Configure-ScheduledTasks.ps1
+& $PSScriptRoot\Configure-ScheduledTasks.ps1 -key $azureFilesKey

@@ -28,7 +28,7 @@ param(
     } else {
         $true
     }
-})][string] $DriveLetter="D" # Drive letter to mount the new VHD to
+})][string] $DriveLetter="E" # Drive letter to mount the new VHD to
 )
 
 $ErrorActionPreference = "Stop"
