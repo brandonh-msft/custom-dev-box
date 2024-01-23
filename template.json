@@ -24,7 +24,15 @@
         "deployOnFailure": {
             "defaultValue": false,
             "type": "bool"
-        }
+        },
+        "offer_name": {
+            "defaultValue": "Developer",
+            "type": "string"
+        },
+        "sku_name": {
+            "defaultValue": "Windows-DevReady",
+            "type": "string"
+        },
     },
     "resources": [
         {
@@ -37,8 +45,8 @@
                 "osState": "Generalized",
                 "identifier": {
                     "publisher": "DevSquad",
-                    "offer": "Developer",
-                    "sku": "Windows-DevReady"
+                    "offer": "[parameters('offer_name')]",
+                    "sku": "[parameters('sku_name')]"
                 },
                 "recommended": {
                     "vCPUs": {
