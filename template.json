@@ -104,7 +104,7 @@
                     },
                     {
                         "inline": [
-                            "c:\\scripts\\Configure-DevSquadVM-System.ps1 -azureFilesKey \"[parameters('azureFiles_key')]\"",
+                            "[concat('c:\\scripts\\Configure-DevSquadVM-System.ps1 -azureFilesKey \"', parameters('azureFiles_key'), '\"')]",
                             "c:\\scripts\\Remove-Things.ps1"
                         ],
                         "name": "configure vm (system)",
