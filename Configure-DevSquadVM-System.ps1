@@ -12,7 +12,7 @@ Write-Host "Installing tools"
 Write-Host "Creating DevDrive"
 & $PSScriptRoot\Create-DevDrive.ps1
 
-Write-Host "Mounting Azure Files share"
+Write-Host "Mounting Azure Files share (key: $azureFilesKey )"
 & $PSScriptRoot\Mount-AzureFiles.ps1 -account squadstorage -share software -key $azureFilesKey
 
 Write-Host "Configuring Scheduled Tasks"

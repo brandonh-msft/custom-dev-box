@@ -1,4 +1,4 @@
-param([String]$account, [String]$share, [String]$key)
+param([string]$account, [string]$share, [string]$key)
 
 $connectTestResult = Test-NetConnection -ComputerName "${account}.file.core.windows.net" -Port 445
 if ($connectTestResult.TcpTestSucceeded) {
