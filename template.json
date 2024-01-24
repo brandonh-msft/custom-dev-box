@@ -115,6 +115,14 @@
                             0,
                             1
                         ]
+                    },
+                    {
+                        "name": "Do Windows Updates",
+                        "type": "WindowsUpdate"
+                    },
+                    {
+                        "name": "Restart Windows",
+                        "type": "WindowsRestart"
                     }
                 ],
                 "optimize": {
