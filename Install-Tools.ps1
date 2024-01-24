@@ -7,14 +7,10 @@ Write-Host "Installing Notepad++"
 choco install notepadplusplus -y -f -r --no-progress --ignoredetectedreboot --pin
 Write-Host "Installing VS Code"
 choco install vscode -y -f -r --no-progress --ignoredetectedreboot --pin
-Write-Host "Installing Azure CLI"
-choco install azure-cli -y -f -r --no-progress --ignoredetectedreboot
 Write-Host "Installing GPG4Win"
 choco install gpg4win -y -f -r --no-progress --ignoredetectedreboot --pin
 Write-Host "Installing 7Zip"
 choco install 7zip -y -f -r --no-progress --ignoredetectedreboot --pin
-Write-Host "Installing GitHub CLI"
-choco install gh -y -f -r --no-progress --ignoredetectedreboot
 Write-Host "Installing Powershell Core"
 choco install powershell-core -y -f -r --no-progress --ignoredetectedreboot
 Write-Host "Installing Git Credential Manager"
