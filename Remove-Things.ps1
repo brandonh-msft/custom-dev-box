@@ -1,2 +1,1 @@
-# Write-Host "Removing WSL"
-# Disable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -NoRestart
+rm -Force C:\\Users\\Public\\Desktop\\*.lnk

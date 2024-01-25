@@ -34,4 +34,4 @@ choco install bicep -y -f -r --no-progress --ignoredetectedreboot
 # Write-Host "Installing Teams"
 # choco install Microsoft-teams -y
 
-wsl --install -d ubuntu --web-download --no-launch
+wsl --install -d ubuntu --no-launch
