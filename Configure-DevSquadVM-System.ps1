@@ -13,7 +13,7 @@ Write-Host "Creating DevDrive"
 & $PSScriptRoot\Create-DevDrive.ps1 -DriveLetter 'E' # Because D is already taken by the DVD drive
 
 Write-Host "Mounting Azure Files share (key: $azureFilesKey )"
-& $PSScriptRoot\Mount-AzureFiles.ps1 -account squadstorage -share software -key $azureFilesKey
+& $PSScriptRoot\Mount-AzureFiles.ps1 -key $azureFilesKey
 
 # Write-Host "Configuring Scheduled Tasks"
 # & $PSScriptRoot\Configure-ScheduledTasks.ps1 -key $azureFilesKey

@@ -132,7 +132,6 @@
                         "inline": [
                             "[concat('c:\\scripts\\Configure-ScheduledTasks \"', parameters('azureFiles_key'), '\"')]",
                             "c:\\scripts\\Remove-Things.ps1",
-                            "c:\\scripts\\Update-WinGetPackages.ps1",
                             "DISM.exe /Online /Set-ReservedStorageState /State:Disabled"
                         ],
                         "name": "Run more scripts",

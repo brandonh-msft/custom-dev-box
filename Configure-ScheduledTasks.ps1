@@ -1,12 +1,12 @@
 param([String]$azureFilesKey)
 
-Write-Host "Adding DevDrive Mount scheduled task"
-$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "Mount-Vhd c:\devdrive.vhdx"
+Write-Host "Adding One Time Setup scheduled task"
+$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "c:\Apply-OneTimeSetup.ps1"
 $Trigger = New-ScheduledTaskTrigger -AtLogon
 $Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount
 $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -Hidden -MultipleInstances IgnoreNew 
 $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
-Register-ScheduledTask -TaskName "Mount DevDrive" -InputObject $Task
+Register-ScheduledTask -TaskName "One Time Setup" -InputObject $Task
 
 Write-Host "Adding S: mount scheduled task"
 $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "c:\scripts\Mount-AzureFiles.ps1 -key $azureFilesKey"
