@@ -1,7 +1,7 @@
 param([String]$azureFilesKey)
 
 Write-Host "Adding One Time Setup scheduled task"
-$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "c:\scripts\Apply-OneTimeSetup.ps1"
+$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "c:\scripts\Apply-OneTimeUserSetup.ps1 -taskName 'One Time Setup'"
 $Trigger = New-ScheduledTaskTrigger -AtLogon
 $Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -Hidden -MultipleInstances IgnoreNew 

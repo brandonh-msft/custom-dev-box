@@ -1,5 +1,3 @@
-param([String]$azureFilesKey)
-
 Write-Host "Applying Timezone Redirecting settings"
 & $PSScriptRoot\Set-TimezoneRedirection.ps1
 
@@ -11,9 +9,3 @@ Write-Host "Installing tools"
 
 Write-Host "Creating DevDrive"
 & $PSScriptRoot\Create-DevDrive.ps1 -DriveLetter 'E' # Because D is already taken by the DVD drive
-
-Write-Host "Mounting Azure Files share (key: $azureFilesKey )"
-& $PSScriptRoot\Mount-AzureFiles.ps1 -key $azureFilesKey
-
-# Write-Host "Configuring Scheduled Tasks"
-# & $PSScriptRoot\Configure-ScheduledTasks.ps1 -key $azureFilesKey
