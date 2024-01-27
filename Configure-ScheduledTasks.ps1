@@ -1,7 +1,7 @@
 param([String]$azureFilesKey)
 
 Write-Host "Adding One Time Setup scheduled task"
-$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "c:\scripts\Apply-OneTimeUserSetup.ps1 -taskName 'One Time Setup'"
+$Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "c:\scripts\Apply-OneTimeUserSetup.ps1 -taskName 'One Time Setup'"
 $Trigger = New-ScheduledTaskTrigger -AtLogon
 $Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
 $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -Hidden -MultipleInstances IgnoreNew 
@@ -9,7 +9,7 @@ $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principa
 Register-ScheduledTask -TaskName "One Time Setup" -InputObject $Task
 
 Write-Host "Adding S: mount scheduled task"
-$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "c:\scripts\Mount-AzureFiles.ps1 -key $azureFilesKey"
+$Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "c:\scripts\Mount-AzureFiles.ps1 -key $azureFilesKey"
 $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users"
 $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -Hidden -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
 $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings

@@ -62,7 +62,7 @@
                 "features": [
                     {
                         "name": "SecurityType",
-                        "value": "TrustedLaunchSupported"
+                        "value": "TrustedLaunch"
                     },
                     {
                         "name": "IsHibernateSupported",
@@ -146,8 +146,7 @@
                     {
                         "destination": "c:\\DeprovisioningScript.ps1",
                         "name": "new deprovisioning script",
-                        "sha256Checksum": "e0862dfa7ff68eff36f579d5b09192b23293ca1ada682a4846ba8499a1f26a03",
-                        "sourceUri": "https://gist.githubusercontent.com/brandonh-msft/192ae5cd666b87b2adbe6f4c6d9cab0e/raw/605363868c19ec0eff370c882292fd7820893808/DeprovisioningScript.ps1",
+                        "sourceUri": "https://gist.githubusercontent.com/brandonh-msft/192ae5cd666b87b2adbe6f4c6d9cab0e/raw/DeprovisioningScript.ps1",
                         "type": "File"
                     }
                 ],
