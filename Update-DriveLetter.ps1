@@ -7,7 +7,7 @@ param (
 )
 
 # Validate the input format
-if (-not ($currentDriveLetter -match '^[A-Z]:$') -or -not ($newDriveLetter -match '^[A-Z]:$')) {
+if (-not ($Current -match '^[A-Z]:$') -or -not ($New -match '^[A-Z]:$')) {
     Write-Output "Invalid input format. Please enter the drive letter in the format '<character>:'"
     return
 }
