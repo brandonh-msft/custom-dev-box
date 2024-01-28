@@ -1,8 +1,3 @@
-Write-Output 'Removing DVD drive ...'
-Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\cdrom -Name Start -Value 4 -Type DWord
-
-& c:\scripts\Update-DriveLetter.ps1 'E:' 'D:'
-
 Write-Output '>>> Waiting for GA Service (RdAgent) to start ...'
 while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 5 }
 Write-Output '>>> Waiting for GA Service (WindowsAzureTelemetryService) to start ...'
