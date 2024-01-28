@@ -130,18 +130,8 @@
                     },
                     {
                         "inline": [
-                            "c:\\scripts\\Install-Tools.ps1"
-                        ],
-                        "name": "Install devtools (admin)",
-                        "runElevated": true,
-                        "type": "PowerShell",
-                        "validExitCodes": [
-                            0,
-                            1
-                        ]
-                    },
-                    {
-                        "inline": [
+                            "c:\\scripts\\Install-Tools.ps1",
+                            "Mount-VHD c:\\devdrive.vhdx",
                             "c:\\scripts\\Update-DriveLetter.ps1 'E:' 'D:'",
                             "[concat('c:\\scripts\\Configure-ScheduledTasks \"', parameters('azureFiles_key'), '\"')]",
                             "c:\\scripts\\Remove-Things.ps1",

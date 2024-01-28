@@ -6,48 +6,34 @@ try {
     winget list
 }
 catch {
-    Write-Host "Winget is not installed. Installing..."
-
-    # Get the download URL of the latest winget installer from GitHub:
-    $API_URL = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
-    $DOWNLOAD_URL = $(Invoke-RestMethod $API_URL).assets.browser_download_url |
-    Where-Object { $_.EndsWith(".msixbundle") }
-
-    # Download the installer:
-    Invoke-WebRequest -URI $DOWNLOAD_URL -OutFile winget.msixbundle -UseBasicParsing
-
-    # Install winget:
-    Add-AppxPackage winget.msixbundle
-
-    # Remove the installer:
-    Remove-Item winget.msixbundle
+    Write-Host "Winget is not installed."
 }
 
-Write-Host "Installing software via winget..."
+Write-Host "Installing software via PowerShell WinGet..."
 
 Write-Host "Installing Powershell Core"
-winget install Microsoft.PowerShell --silent --force --scope machine
+Install-WinGetPackage -Id Microsoft.PowerShell -Scope System -Mode Silent -Force
 Write-Host "Installing VS Code"
-winget install Microsoft.VisualStudioCode --silent --force --scope machine
+Install-WinGetPackage -Id Microsoft.VisualStudioCode -Scope System -Mode Silent -Force
 Write-Host "Installing 7Zip"
-winget install 7zip.7zip --silent --force --scope machine
+Install-WinGetPackage 7zip.7zip -Scope System -Mode Silent -Force
 Write-Host "Installing Docker Desktop"
-winget install Docker.DockerDesktop --silent --force --scope machine
+Install-WinGetPackage Docker.DockerDesktop -Scope System -Mode Silent -Force
 Write-Host "Installing Go"
-winget install GoLang.Go --silent --force --scope machine
+Install-WinGetPackage GoLang.Go -Scope System -Mode Silent -Force
 Write-Host "Installing Bicep"
-winget install Microsoft.Bicep --silent --force --scope machine
+Install-WinGetPackage Microsoft.Bicep -Scope System -Mode Silent -Force
 Write-Host "Installing Terraform"
-winget install Hashicorp.Terraform --silent --force --scope machine
+Install-WinGetPackage Hashicorp.Terraform -Scope System -Mode Silent -Force
 Write-Host "Installing Notepad++"
-winget install --id NotepadPlusPlus_7njy0v32s6xk6 --silent --force --scope machine
+Install-WinGetPackage --id NotepadPlusPlus_7njy0v32s6xk6 -Scope System -Mode Silent -Force
 Write-Host "Installing GPG4Win"
-winget install --id GnuPG.Gpg4win --silent --force --scope machine
+Install-WinGetPackage --id GnuPG.Gpg4win -Scope System -Mode Silent -Force
 Write-Host "Installing Dev Home"
-winget install --id Microsoft.DevHome --silent --force --scope machine
+Install-WinGetPackage --id Microsoft.DevHome -Scope System -Mode Silent -Force
 Write-Host "Installing Windows Powertoys"
-winget install --id Microsoft.PowerToys --silent --force --scope machine
+Install-WinGetPackage --id Microsoft.PowerToys -Scope System -Mode Silent -Force
 Write-Host "Installing Microsoft Azure Storage Explorer"
-winget install --id Microsoft.Azure.StorageExplorer --silent --force --scope machine
+Install-WinGetPackage --id Microsoft.Azure.StorageExplorer -Scope System -Mode Silent -Force
 Write-Host "Installing Python 3"
-winget install --id Python.Launcher --silent --force --scope machine
+Install-WinGetPackage --id Python.Launcher -Scope System -Mode Silent -Force
