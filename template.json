@@ -109,7 +109,7 @@
                     },
                     {
                         "inline": [
-                            "[concat('c:\\scripts\\Configure-DevSquadVM-System.ps1 -azureFilesKey \"', parameters('azureFiles_key'), '\"')]"
+                            "c:\\scripts\\Configure-DevSquadVM-System.ps1"
                         ],
                         "name": "configure vm (system)",
                         "runAsSystem": true,
