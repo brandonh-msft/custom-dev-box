@@ -3,7 +3,9 @@ $ErrorActionPreference = "Stop"
 try {
     Write-Host "Checking for Winget..."
 
-    winget list
+    winget -v
+
+    Write-Host "Winget is installed."
 }
 catch {
     Write-Host "Winget is not installed."
