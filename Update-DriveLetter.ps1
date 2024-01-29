@@ -1,8 +1,8 @@
 param (
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$Current,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$New
 )
 
@@ -16,16 +16,18 @@ if (-not ($Current -match '^[A-Z]:$') -or -not ($New -match '^[A-Z]:$')) {
 $currentDrive = Get-WmiObject -Class Win32_volume -Filter "DriveLetter = '$Current'"
 if ($null -eq $currentDrive) {
     Write-Error "The current drive letter does not exist."
-    return
+}
+else {
+    # Check if the new drive letter does not exist
+    $newDrive = Get-WmiObject -Class Win32_volume -Filter "DriveLetter = '$New'"
+    if ($null -ne $newDrive) {
+        Write-Error "The new drive letter already exists."
+    }
+    else {
+        # Change the drive letter
+        $currentDrive | Set-WmiInstance -Arguments @{DriveLetter = "$New" }
+        Write-Output "Drive letter has been changed from $Current to $New."
+    }
 }
 
-# Check if the new drive letter does not exist
-$newDrive = Get-WmiObject -Class Win32_volume -Filter "DriveLetter = '$New'"
-if ($null -ne $newDrive) {
-    Write-Error "The new drive letter already exists."
-    return
-}
-
-# Change the drive letter
-$currentDrive | Set-WmiInstance -Arguments @{DriveLetter="$New"}
-Write-Output "Drive letter has been changed from $Current to $New."
+Get-Volume

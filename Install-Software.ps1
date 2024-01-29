@@ -1,5 +1,4 @@
 # Must be run from w/in Powershell (Core)
-Write-Host "Installing software via PowerShell WinGet..."
 Install-Module Microsoft.WinGet.Client -Scope AllUsers -AcceptLicense -AllowClobber -Force
 Import-Module Microsoft.WinGet.Client -Force -Global
 
@@ -7,33 +6,33 @@ function Write-Status {
     process {
         if ($_.Status -eq 'Ok') {
             Write-Output "✅"
-        } else {
+        }
+        else {
             Write-Output "$($_.Status) $($_.ExtendedErrorCode)"
         }
     }
 }
 
-Write-Host "Installing VS Code"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Microsoft.VisualStudioCode | Write-Status
-Write-Host "Installing 7Zip"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id 7zip.7zip | Write-Status
-Write-Host "Installing Docker Desktop"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Docker.DockerDesktop | Write-Status
-Write-Host "Installing Go"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id GoLang.Go | Write-Status
-Write-Host "Installing Bicep"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Microsoft.Bicep | Write-Status
-Write-Host "Installing Terraform"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Hashicorp.Terraform | Write-Status
-Write-Host "Installing Notepad++"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id 'Notepad++.Notepad++' | Write-Status
-Write-Host "Installing GPG4Win"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id GnuPG.Gpg4win | Write-Status
-Write-Host "Installing Dev Home"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Microsoft.DevHome | Write-Status
-Write-Host "Installing Windows Powertoys"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Microsoft.PowerToys | Write-Status
-Write-Host "Installing Microsoft Azure Storage Explorer"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Microsoft.Azure.StorageExplorer | Write-Status
-Write-Host "Installing Python 3"
-Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Python.Launcher | Write-Status
+function Install-PackageWithStatus {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$packageName,
+        [Parameter(Mandatory = $true)]
+        [string]$packageId
+    )
+
+    & $PSScriptRoot\Run-WithStatus.ps1 "Installing $packageName" { Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id $packageId | Write-Status }
+}
+
+Install-PackageWithStatus -packageId Microsoft.VisualStudioCode -packageName "VS Code"
+Install-PackageWithStatus -packageId 7zip.7zip -packageName "7Zip"
+Install-PackageWithStatus -packageId Docker.DockerDesktop -packageName "Docker Desktop"
+Install-PackageWithStatus -packageId GoLang.Go -packageName "Go"
+Install-PackageWithStatus -packageId Microsoft.Bicep -packageName "Bicep"
+Install-PackageWithStatus -packageId Hashicorp.Terraform -packageName "Terraform"
+Install-PackageWithStatus -packageId 'Notepad++.Notepad++' -packageName "Notepad++"
+Install-PackageWithStatus -packageId GnuPG.Gpg4win -packageName "GPG4Win"
+Install-PackageWithStatus -packageId Microsoft.DevHome -packageName "Dev Home"
+Install-PackageWithStatus -packageId Microsoft.PowerToys -packageName "Windows Powertoys"
+Install-PackageWithStatus -packageId Microsoft.Azure.StorageExplorer -packageName "Microsoft Azure Storage Explorer"
+Install-PackageWithStatus -packageId Python.Launcher -packageName "Python 3"
