@@ -1,6 +1,6 @@
 param([String]$azureFilesKey)
 
-pwsh -MTA -noni -nop -ex Unrestricted -File c:\scripts\Install-Software.ps1
+pwsh -MTA -noni -nop -ex Unrestricted -File c:\scripts\Install-SystemSoftware.ps1
 
 $v = Mount-VHD c:\devdrive.vhdx -Passthru | Get-Disk | Get-Partition | Get-Volume
 Write-Output $v
