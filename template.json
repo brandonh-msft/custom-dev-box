@@ -7,7 +7,7 @@
             "defaultValue": "squadboxgallery"
         },
         "imageTemplate_name": {
-            "defaultValue": "devsquad-windows-devready",
+            "defaultValue": "devsquad-windows",
             "type": "string"
         },
         "azureFiles_key": {
@@ -30,7 +30,7 @@
             "type": "string"
         },
         "sku_name": {
-            "defaultValue": "Windows-DevReady",
+            "defaultValue": "VisualStudio2022",
             "type": "string"
         }
     },
