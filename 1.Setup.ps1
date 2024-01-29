@@ -2,15 +2,19 @@ Write-Output "Powershell edition: $($PSVersionTable.PSEdition)"
 
 Write-Host "Applying Timezone Redirecting settings"
 & $PSScriptRoot\Set-TimezoneRedirection.ps1
+Write-Host "Applying Timezone Redirecting settings - Done."
 
 Write-Host "Applying Windows Optimizations"
 & $PSScriptRoot\Set-WindowsOptimization.ps1 -Optimizations 'WindowsMediaPlayer', 'ScheduledTasks', 'DefaultUserSettings', 'Autologgers', 'Services', 'NetworkOptimizations', 'LGPO', 'Edge', 'RemoveLegacyIE'
+Write-Host "Applying Windows Optimizations - Done."
 
 Write-Host "Creating DevDrive"
 & $PSScriptRoot\Create-DevDrive.ps1 -DriveLetter 'E' # Because D is already taken by the DVD drive
+Write-Host "Creating DevDrive - Done."
 
 Write-Host "Removing DVD drive from the system"
 Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\cdrom -Name Start -Value 4 -Type DWord
+Write-Host "Removing DVD drive from the system - Done."
 
 try {
     Write-Host "Checking for PowerShell Core..."
@@ -36,4 +40,6 @@ catch {
     Start-Process -FilePath msiexec.exe -ArgumentList "/i $destination /qn /norestart" -Wait -NoNewWindow
 
     Remove-Item $destination
+
+    Write-Host "PowerShell Core Install - Done."
 }
