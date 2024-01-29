@@ -1,1 +1,0 @@
-rm -Force C:\\Users\\Public\\Desktop\\*.lnk

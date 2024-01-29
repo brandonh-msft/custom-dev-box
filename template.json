@@ -104,8 +104,7 @@
                         "inline": [
                             "git clone https://gist.github.com/192ae5cd666b87b2adbe6f4c6d9cab0e.git c:\\scripts --depth 1 -q",
                             "cd c:\\scripts",
-                            "git log -q",
-                            "Write-Output \"Powershell edition: $PSVersionTable.PSEdition\""
+                            "git log -q"
                         ],
                         "name": "clone scripts",
                         "runAsSystem": true,
@@ -114,10 +113,9 @@
                     },
                     {
                         "inline": [
-                            "c:\\scripts\\Configure-DevSquadVM-System.ps1",
-                            "c:\\scripts\\Install-PowershellCore.ps1"
+                            "c:\\scripts\\1.Setup.ps1"
                         ],
-                        "name": "configure vm (system)",
+                        "name": "Run Setup",
                         "runAsSystem": true,
                         "runElevated": true,
                         "type": "PowerShell",
@@ -136,14 +134,9 @@
                     },
                     {
                         "inline": [
-                            "pwsh -MTA -noni -nop -ex Unrestricted -File c:\\scripts\\Install-WinGetPackages.ps1",
-                            "Mount-VHD c:\\devdrive.vhdx",
-                            "c:\\scripts\\Update-DriveLetter.ps1 'E:' 'D:'",
-                            "[concat('c:\\scripts\\Configure-ScheduledTasks \"', parameters('azureFiles_key'), '\"')]",
-                            "c:\\scripts\\Remove-Things.ps1",
-                            "DISM.exe /Online /Set-ReservedStorageState /State:Disabled"
+                            "[concat('c:\\scripts\\2.Configure.ps1 \"', parameters('azureFiles_key'), '\"')]"
                         ],
-                        "name": "Install devtools & more (system)",
+                        "name": "Run configure",
                         "runAsSystem": true,
                         "runElevated": true,
                         "type": "PowerShell",
