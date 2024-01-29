@@ -6,6 +6,10 @@
             "type": "string",
             "defaultValue": "squadboxgallery"
         },
+        "galleryImage_name": {
+            "type": "string",
+            "defaultValue": "devsquad-windows"
+        },
         "imageTemplate_name": {
             "defaultValue": "devsquad-windows",
             "type": "string"
@@ -37,7 +41,7 @@
     "resources": [
         {
             "type": "Microsoft.Compute/galleries/images",
-            "name": "[concat(parameters('galleryName'), '/', parameters('imageTemplate_name'))]",
+            "name": "[concat(parameters('galleryName'), '/', parameters('galleryImage_name'))]",
             "apiVersion": "2021-10-01",
             "location": "[parameters('location')]",
             "properties": {
@@ -79,7 +83,7 @@
             "name": "[parameters('imageTemplate_name')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Compute/galleries/images', parameters('galleryName'), parameters('imageTemplate_name'))]"
+                "[resourceId('Microsoft.Compute/galleries/images', parameters('galleryName'), parameters('galleryImage_name'))]"
             ],
             "identity": {
                 "type": "UserAssigned",
@@ -109,7 +113,8 @@
                     },
                     {
                         "inline": [
-                            "c:\\scripts\\Configure-DevSquadVM-System.ps1"
+                            "c:\\scripts\\Configure-DevSquadVM-System.ps1",
+                            "c:\\scripts\\Install-PowershellCore.ps1"
                         ],
                         "name": "configure vm (system)",
                         "runAsSystem": true,
@@ -130,14 +135,14 @@
                     },
                     {
                         "inline": [
-                            "c:\\scripts\\Install-Tools.ps1",
+                            "pwsh -MTA -noni -nop -ex Unrestricted -File c:\\scripts\\Install-WinGetPackages.ps1",
                             "Mount-VHD c:\\devdrive.vhdx",
                             "c:\\scripts\\Update-DriveLetter.ps1 'E:' 'D:'",
                             "[concat('c:\\scripts\\Configure-ScheduledTasks \"', parameters('azureFiles_key'), '\"')]",
                             "c:\\scripts\\Remove-Things.ps1",
                             "DISM.exe /Online /Set-ReservedStorageState /State:Disabled"
                         ],
-                        "name": "Run more scripts (system)",
+                        "name": "Install devtools & more (system)",
                         "runAsSystem": true,
                         "runElevated": true,
                         "type": "PowerShell",
@@ -164,7 +169,7 @@
                 "distribute": [
                     {
                         "excludeFromLatest": false,
-                        "galleryImageId": "[resourceId('Microsoft.Compute/galleries/images', parameters('galleryName'), parameters('imageTemplate_name'))]",
+                        "galleryImageId": "[resourceId('Microsoft.Compute/galleries/images', parameters('galleryName'), parameters('galleryImage_name'))]",
                         "replicationRegions": [
                             "[parameters('location')]"
                         ],
