@@ -30,7 +30,7 @@ Install-WinGetPackage Microsoft.Bicep -Scope System -Mode Silent -Force
 Write-Host "Installing Terraform"
 Install-WinGetPackage Hashicorp.Terraform -Scope System -Mode Silent -Force
 Write-Host "Installing Notepad++"
-Install-WinGetPackage --id NotepadPlusPlus_7njy0v32s6xk6 -Scope System -Mode Silent -Force
+Install-WinGetPackage --id 'Notepad++.Notepad++' -Scope System -Mode Silent -Force
 Write-Host "Installing GPG4Win"
 Install-WinGetPackage --id GnuPG.Gpg4win -Scope System -Mode Silent -Force
 Write-Host "Installing Dev Home"
