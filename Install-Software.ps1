@@ -1,7 +1,7 @@
 # Must be run from w/in Powershell (Core)
 Write-Host "Installing software via PowerShell WinGet..."
-Install-Module Microsoft.WinGet.Client -AllowClobber -Force
-Import-Module Microsoft.WinGet.Client -Force
+Install-Module Microsoft.WinGet.Client -Scope AllUsers -AcceptLicense -AllowClobber -Force
+Import-Module Microsoft.WinGet.Client -Force -Global
 
 Write-Host "Installing VS Code"
 Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id Microsoft.VisualStudioCode
