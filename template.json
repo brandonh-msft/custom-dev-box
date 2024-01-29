@@ -104,7 +104,8 @@
                         "inline": [
                             "git clone https://gist.github.com/192ae5cd666b87b2adbe6f4c6d9cab0e.git c:\\scripts --depth 1 -q",
                             "cd c:\\scripts",
-                            "git log -q"
+                            "git log -q",
+                            "Write-Output \"Powershell edition: $PSVersionTable.PSEdition\""
                         ],
                         "name": "clone scripts",
                         "runAsSystem": true,
