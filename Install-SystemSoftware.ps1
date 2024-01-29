@@ -5,7 +5,7 @@ Import-Module Microsoft.WinGet.Client -Force -Global
 function Write-Status {
     process {
         if ($_.Status -eq 'Ok') {
-            Write-Output "✅"
+            Write-Output "`u{2713}"
         }
         else {
             Write-Output "$($_.Status) $($_.ExtendedErrorCode)"
