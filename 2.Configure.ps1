@@ -25,5 +25,4 @@ $Trigger = New-ScheduledTaskTrigger -AtLogon
     Register-ScheduledTask -TaskName "Mount Squad Software storage" -InputObject $Task
 }
 
-& $PSScriptRoot\Run-WithStatus.ps1 "Cleaning up desktop..." { rm -Force C:\Users\Public\Desktop\*.lnk }
-& $PSScriptRoot\Run-WithStatus.ps1 "Disabling Reserved Storage..." { DISM.exe /Online /Set-ReservedStorageState /State:Disabled }
+& $PSScriptRoot\Run-WithStatus.ps1 "Cleaning up desktop" { rm -Force C:\Users\Public\Desktop\*.lnk }

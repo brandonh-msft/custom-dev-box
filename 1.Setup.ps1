@@ -33,3 +33,5 @@ catch {
         Remove-Item $destination
     }
 }
+
+& $PSScriptRoot\Run-WithStatus.ps1 "Disabling Reserved Storage" { DISM.exe /Online /Set-ReservedStorageState /State:Disabled }
