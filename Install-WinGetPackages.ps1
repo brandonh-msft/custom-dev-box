@@ -1,7 +1,7 @@
 # Must be run from w/in Powershell (Core)
 Write-Host "Installing software via PowerShell WinGet..."
 Install-Module -Name Microsoft.WinGet.Client -AcceptLicense -Force
-Import-Module -Name Microsoft.WinGet.Client
+Import-Module Microsoft.WinGet.Client
 
 Write-Host "Installing Powershell Core"
 Install-WinGetPackage -Id Microsoft.PowerShell -Scope System -Mode Silent -Force
