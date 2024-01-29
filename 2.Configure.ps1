@@ -6,8 +6,11 @@ Write-Host "Updating Windows Store apps..."
 pwsh -MTA -noni -nop -ex Unrestricted -File c:\scripts\Install-Software.ps1
 
 Write-Host "Changing DevDrive drive letter..."
-Mount-VHD c:\devdrive.vhdx
-& $PSScriptRoot\Update-DriveLetter.ps1 'E:' 'D:'
+$v = Mount-VHD c:\devdrive.vhdx -Passthru | Get-Disk | Get-Partition | Get-Volume
+Write-Output $v
+if ($v.DriveLetter -ne 'D') {
+    & $PSScriptRoot\Update-DriveLetter.ps1 "$($v.DriveLetter):" 'D:'
+}
 
 Write-Host "Adding One Time Setup scheduled task..."
 $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Apply-OneTimeUserSetup.ps1 -taskName 'One Time Setup'"
