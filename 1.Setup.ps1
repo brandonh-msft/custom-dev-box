@@ -5,7 +5,6 @@ Write-Output "Powershell edition: $($PSVersionTable.PSEdition)"
 & $PSScriptRoot\Run-WithStatus.ps1 "Creating DevDrive" { 
     & $PSScriptRoot\Create-DevDrive.ps1 -DriveLetter 'E' # Because D is already taken by the DVD drive
 }
-& $PSScriptRoot\Run-WithStatus.ps1 "Removing DVD drive from the system" { Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\cdrom -Name Start -Value 4 -Type DWord }
 
 try {
     Write-Host "Checking for PowerShell Core..."
@@ -33,5 +32,3 @@ catch {
         Remove-Item $destination
     }
 }
-
-& $PSScriptRoot\Run-WithStatus.ps1 "Disabling Reserved Storage" { DISM.exe /Online /Set-ReservedStorageState /State:Disabled }
