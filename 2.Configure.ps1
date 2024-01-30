@@ -26,3 +26,5 @@ $Trigger = New-ScheduledTaskTrigger -AtLogon
 }
 
 & $PSScriptRoot\Run-WithStatus.ps1 "Cleaning up desktop" { rm -Force C:\Users\Public\Desktop\*.lnk }
+& $PSScriptRoot\Run-WithStatus.ps1 "Removing DVD drive from the system" { Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\cdrom -Name Start -Value 4 -Type DWord }
+# & $PSScriptRoot\Run-WithStatus.ps1 "Disabling Reserved Storage" { DISM.exe /Online /Set-ReservedStorageState /State:Disabled }

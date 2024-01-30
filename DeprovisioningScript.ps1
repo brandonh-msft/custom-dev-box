@@ -1,6 +1,3 @@
-& c:\scripts\Run-WithStatus.ps1 "Removing DVD drive from the system" { Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\cdrom -Name Start -Value 4 -Type DWord }
-& c:\scripts\Run-WithStatus.ps1 "Disabling Reserved Storage" { DISM.exe /Online /Set-ReservedStorageState /State:Disabled }
-
 Write-Output '>>> Waiting for GA Service (RdAgent) to start ...'
 while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 5 }
 Write-Output '>>> Waiting for GA Service (WindowsAzureTelemetryService) to start ...'
