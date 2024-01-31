@@ -27,4 +27,4 @@ Install-PackageWithStatus -packageId 9NZCC27PR6N6 -packageName "Dev Home GitHub 
 Install-PackageWithStatus -packageId Microsoft.Bicep -packageName "Bicep"
 Install-PackageWithStatus -packageId Hashicorp.Terraform -packageName "Terraform"
 
-& $PSScriptRoot\Run-WithStatus.ps1 "Updating WinGet packages" { Update-WinGetPackage -Mode Silent -Force }
+& $PSScriptRoot\Run-WithStatus.ps1 "Updating WinGet packages" { $(Get-WinGetPackage | Where-Object { $_.IsUpdateAvailable -eq $true -and $_.Name -ne 'Microsoft 365 Apps for enterprise' }) | Update-WinGetPackage -Mode Silent -Force }
