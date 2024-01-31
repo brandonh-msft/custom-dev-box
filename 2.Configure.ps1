@@ -9,10 +9,10 @@ if ($v.DriveLetter -ne 'D') {
 }
 
 $Trigger = New-ScheduledTaskTrigger -AtLogon
+$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
 & $PSScriptRoot\Run-WithStatus.ps1 "Adding One Time Setup scheduled task" { 
     $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Apply-OneTimeUserSetup.ps1 -taskName 'One Time Setup'"
-    $Principal = New-ScheduledTaskPrincipal -UserId "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
-    $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -Hidden -MultipleInstances IgnoreNew 
+    $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users" -RunLevel Highest
     $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
     Register-ScheduledTask -TaskName "One Time Setup" -InputObject $Task
 }
@@ -20,7 +20,6 @@ $Trigger = New-ScheduledTaskTrigger -AtLogon
 & $PSScriptRoot\Run-WithStatus.ps1 "Adding S: mount scheduled task" { 
     $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Mount-AzureFiles.ps1 -key $azureFilesKey -account $account -share $share"
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users"
-    $Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -Hidden -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
     $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
     Register-ScheduledTask -TaskName "Mount Squad Software storage" -InputObject $Task
 }
