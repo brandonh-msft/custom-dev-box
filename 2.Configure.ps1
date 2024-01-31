@@ -2,12 +2,6 @@ param([String]$azureFilesKey, [string]$account="squadstorage", [string]$share="s
 
 pwsh -MTA -noni -nop -ex Unrestricted -File c:\scripts\Install-SystemSoftware.ps1
 
-$v = Mount-VHD c:\devdrive.vhdx -Passthru | Get-Disk | Get-Partition | Get-Volume
-Write-Output $v
-if ($v.DriveLetter -ne 'D') {
-    & $PSScriptRoot\Run-WithStatus.ps1 "Changing DevDrive drive letter" { & $PSScriptRoot\Update-DriveLetter.ps1 "$($v.DriveLetter):" 'D:' }
-}
-
 $Trigger = New-ScheduledTaskTrigger -AtLogon
 $Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
 & $PSScriptRoot\Run-WithStatus.ps1 "Adding One Time Setup scheduled task" { 
