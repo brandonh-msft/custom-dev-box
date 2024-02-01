@@ -126,7 +126,7 @@ resource devCenter 'Microsoft.DevCenter/devcenters@2023-04-01' = {
   }
 
   resource devCenterGalleryMapping 'galleries' = {
-    name: 'devboximages${deploymentSuffix}'
+    name: 'devboximages'
     dependsOn: [ galleryDcManagedRoleAssignment ]
     properties: {
       galleryResourceId: gallery.id
@@ -332,7 +332,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2023-07-01
   }
 
   resource imageTrigger 'triggers' = {
-    name: 'imageTrigger'
+    name: 'Rebuild when Win-VS-M365 image changes'
     properties: {
       kind: 'SourceImage'
     }
