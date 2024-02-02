@@ -44,7 +44,7 @@ if (-not $windows365PrincipalId)
     exit 1
 }
 
-Write-Output "Windows 365 service principal found with id: $windows365PrincipalId"
+Write-Debug "Windows 365 service principal found with id: $windows365PrincipalId"
 
 Write-Output "Deploying initial resources... (takes ~5 minutes)"
 if ($suffix.Length -gt 0)
