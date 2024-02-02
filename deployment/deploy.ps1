@@ -76,13 +76,13 @@ if (-not $noImageBuild)
     try
     {
     	az resource invoke-action --resource-group $mainOutput.properties.outputs.resourceGroupName.value `
-            --resource-type Microsoft.VirtualMachineImages/imageTemplates `
-            --name $mainOutput.properties.outputs.imageTemplateName.value `
-            --action Run
+        --resource-type Microsoft.VirtualMachineImages/imageTemplates `
+        --name $mainOutput.properties.outputs.imageTemplateName.value `
+        --action Run
     }
     catch
     {
-        Write-Warning "You can rerun the script with -prevDeploymentOutputFile .\main.deployment.json to try this step again."
+    Write-Warning "You can rerun the script with -prevDeploymentOutputFile .\main.deployment.json to try this step again."
     }
 }
 else
@@ -112,6 +112,7 @@ if (-not $noAfterBuild)
         -p location=$($mainOutput.properties.outputs.locationOutput.value) `
         -p devCenterName=$($mainOutput.properties.outputs.devCenterName.value) `
         -p devCenterProjectName=$($mainOutput.properties.outputs.projectName.value) `
+        -p windows365PrincipalId=$windows365PrincipalId `
         --only-show-errors
 }
 
