@@ -11,6 +11,11 @@ param devCenterProjectName string
 param imageTemplateName string
 param location string
 
+import * as common from 'common.bicep'
+
+@minLength(1)
+param poolLocations common.poolLocation[]
+
 var readerRoleDefinitionId = resourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
 var contributorRoleDefinitionId = resourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
 
@@ -157,69 +162,29 @@ resource galleryDcManagedRoleAssignment 'Microsoft.Authorization/roleAssignments
   scope: gallery
 }
 
-var defaultScheduleName = 'default'
-func makeScheduleFor(timeZone string) object => {
-  type: 'StopDevBox'
-  frequency: 'Daily'
-  time: '21:00'
-  timeZone: timeZone
-  state: 'Enabled'
-}
-
-func getPoolPropertiesFor(definitionName string, regions array) object => {
-  devBoxDefinitionName: definitionName
-  licenseType: 'Windows_Client'
-  localAdministrator: 'Enabled'
-  virtualNetworkType: 'Managed'
-  singleSignOnStatus: 'Disabled'
-  networkConnectionName: 'managedNetwork'
-  managedVirtualNetworkRegions: regions
-}
 
 resource project 'Microsoft.DevCenter/projects@2023-10-01-preview' = {
-  name: devCenterProjectName
+  name: '${devCenterProjectName}${deploymentSuffix}'
   location: location
   properties: {
     description: 'My project description'
     devCenterId: devCenter.id
   }
-
-  resource scusBlankProjectPool 'pools' = {
-    location: location
-    name: 'brazil-scus-win-blank'
-
-    properties: getPoolPropertiesFor(devCenter::blankBoxDefinition.name, [ 'southcentralus' ])
-
-    resource schedule 'schedules' = {
-      name: defaultScheduleName
-      properties: makeScheduleFor('America/Guatemala')
-    }
-  }
-
-  resource eastUsBlankProjectPool 'pools' = {
-    location: location
-    name: 'eastus-win-blank'
-
-    properties: getPoolPropertiesFor(devCenter::blankBoxDefinition.name, [ 'eastus2' ])
-
-    resource schedule 'schedules' = {
-      name: defaultScheduleName
-      properties: makeScheduleFor('America/New_York')
-    }
-  }
-
-  resource westusBlankProjectPool 'pools' = {
-    location: location
-    name: 'westus-win-blank'
-
-    properties: getPoolPropertiesFor(devCenter::blankBoxDefinition.name, [ 'westus3' ])
-
-    resource schedule 'schedules' = {
-      name: defaultScheduleName
-      properties: makeScheduleFor('America/Los_Angeles')
-    }
-  }
 }
+
+resource pools 'Microsoft.DevCenter/projects/pools@2023-10-01-preview' = [for poolLocation in poolLocations: {
+  parent: project
+  location: location
+  name: 'win-blank-${poolLocation.location}'
+
+  properties: common.getPoolPropertiesFor(devCenter::blankBoxDefinition.name, [ poolLocation.location ])
+}]
+
+resource schedules 'Microsoft.DevCenter/projects/pools/schedules@2023-10-01-preview' = [for poolLocation in poolLocations: {
+  name: '${project.name}/win-blank-${poolLocation.location}/${common.defaultScheduleName}'  // warning is invalid - can't use 'parent' w/in a loop
+  dependsOn: pools
+  properties: common.makeScheduleFor(poolLocation.timeZone)
+}]
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
