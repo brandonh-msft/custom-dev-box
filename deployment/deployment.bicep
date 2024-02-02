@@ -259,7 +259,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2023-07-01
         name: 'Clone scripts'
         type: 'PowerShell'
         inline: [
-          'git clone https://github.com/brandonh-msft/imagebuilder-fullsample.git c:\\scripts --depth 1 --single-branch --sparse -q'
+          'git clone https://github.com/brandonh-msft/custom-dev-box.git c:\\scripts --depth 1 --single-branch --sparse -q'
           'cd c:\\scripts'
           'git log -q'
         ]
@@ -289,7 +289,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2023-07-01
       {
         name: 'New Deprovisioning script'
         type: 'File'
-        sourceUri: 'https://gist.githubusercontent.com/brandonh-msft/192ae5cd666b87b2adbe6f4c6d9cab0e/raw/DeprovisioningScript.ps1'
+        sourceUri: 'https://raw.githubusercontent.com/brandonh-msft/custom-dev-box/main/DeprovisioningScript.ps1'
         destination: 'c:\\DeprovisioningScript.ps1'
       }
     ]
@@ -311,3 +311,4 @@ output storageAccountName string = storageAccount.name
 output projectName string = project.name
 output projectResourceId string = project.id
 output devCenterName string = devCenter.name
+output resourceGroupName string = resourceGroup().name
