@@ -107,13 +107,13 @@ Write-Debug projectResourceId=$projectResourceId
 
 if (-not $noAfterBuild)
 {
-    Write-Output "Deploying DevBox definitions with built image... (~5 minutes)"
+    Write-Output "Deploying DevBox definitions with built image... (~20 minutes *per pool location*)"
     az deployment group create -g $mainOutput.properties.outputs.resourceGroupName.value -n afterimagebuild -f afterimagebuild.bicep -p main.parameters.json `
         -p location=$($mainOutput.properties.outputs.locationOutput.value) `
         -p devCenterName=$($mainOutput.properties.outputs.devCenterName.value) `
         -p devCenterProjectName=$($mainOutput.properties.outputs.projectName.value) `
         -p windows365PrincipalId=$windows365PrincipalId `
-        --only-show-errors
+        --only-show-errors > $null
 }
 
 $groupDisplayName = "Dev Box Users for Project $($mainOutput.properties.outputs.projectName.value)"
@@ -137,5 +137,6 @@ Write-Output "Granting new group User access to Dev Box project..."
 az role assignment create --assignee $groupDetail.id --role "DevCenter Dev Box User" --scope $projectResourceId > $null
 
 Write-Output "Done!"
+Write-Output ""
 Write-Output "You can manage your Dev Center Users by adding members to the '$groupDisplayName' group in Entra here: https://portal.azure.com/#view/Microsoft_AAD_IAM/GroupDetailsMenuBlade/~/Members/groupId/$($groupDetail.id)"
 Write-Output "You can try our your new Dev Box environment by going to https://devbox.microsoft.com and logging in!"
