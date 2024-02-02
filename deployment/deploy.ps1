@@ -4,6 +4,7 @@ param(
 
     [string]$suffix = "",
     [string]$subscriptionId = "",
+    [string]$prevDeploymentOutputFile = $null,
     [switch]$noImageBuild,
     [switch]$noAfterBuild,
     [switch]$noGroupCreate
@@ -46,14 +47,24 @@ if (-not $windows365PrincipalId)
 
 Write-Debug "Windows 365 service principal found with id: $windows365PrincipalId"
 
-Write-Output "Deploying initial resources... (takes ~5 minutes)"
-if ($suffix.Length -gt 0)
+if (-not $prevDeploymentOutputFile)
 {
-    $mainOutput = (az deployment sub create -n 'main' -l $region -f main.bicep -p main.parameters.json -p windows365PrincipalId=$windows365PrincipalId -p deploymentSuffix=$suffix -o json --only-show-errors)
+    Write-Output "Deploying initial resources... (takes ~5 minutes)"
+    if ($suffix.Length -gt 0)
+    {
+        $mainOutput = (az deployment sub create -n 'main' -l $region -f main.bicep -p main.parameters.json -p windows365PrincipalId=$windows365PrincipalId -p deploymentSuffix=$suffix -o json --only-show-errors)
+    }
+    else
+    {
+        $mainOutput = (az deployment sub create -n 'main' -l $region -f main.bicep -p main.parameters.json -p windows365PrincipalId=$windows365PrincipalId -o json --only-show-errors)
+    }
+
+    $mainOutput | Out-File -FilePath "main.deployment.json"
 }
 else
 {
-    $mainOutput = (az deployment sub create -n 'main' -l $region -f main.bicep -p main.parameters.json -p windows365PrincipalId=$windows365PrincipalId -o json --only-show-errors)
+    Write-Output "Loading previous deployment..."
+    $mainOutput = Get-Content $prevDeploymentOutputFile
 }
 
 $mainOutput = $mainOutput | ConvertFrom-Json
@@ -62,10 +73,17 @@ Write-Debug ($mainOutput | Out-String)
 if (-not $noImageBuild)
 {
     Write-Output "Building image... (this can take up to 4 hours - go take a long lunch!)"
-    az resource invoke-action --resource-group $mainOutput.properties.outputs.resourceGroupName.value `
-        --resource-type Microsoft.VirtualMachineImages/imageTemplates `
-        --name $mainOutput.properties.outputs.imageTemplateName.value `
-        --action Run
+    try
+    {
+    	az resource invoke-action --resource-group $mainOutput.properties.outputs.resourceGroupName.value `
+            --resource-type Microsoft.VirtualMachineImages/imageTemplates `
+            --name $mainOutput.properties.outputs.imageTemplateName.value `
+            --action Run
+    }
+    catch
+    {
+        Write-Warning "You can rerun the script with -prevDeploymentOutputFile .\main.deployment.json to try this step again."
+    }
 }
 else
 {
