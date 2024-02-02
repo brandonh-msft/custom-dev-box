@@ -42,7 +42,6 @@ resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@
   location: location
 }
 
-// This one's good
 resource rgBuilderRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(resourceGroup().id, userAssignedIdentity.id, builderRole.id, deploymentSuffix)
   properties: {
@@ -65,7 +64,6 @@ resource windows365RoleAssignment 'Microsoft.Authorization/roleAssignments@2022-
   scope: gallery
 }
 
-// This one's good
 resource galleryBuilderRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(gallery.id, userAssignedIdentity.id, builderRole.id, deploymentSuffix)
   properties: {
@@ -338,3 +336,12 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2023-07-01
     }
   }
 }
+
+output imageTemplateName string = imageTemplate.name
+output locationOutput string = location
+output userAssignedIdentityIdOutput string = userAssignedIdentity.name
+output galleryName string = gallery.name
+output storageAccountName string = storageAccount.name
+output projectName string = project.name
+output projectResourceId string = project.id
+output devCenterName string = devCenter.name
