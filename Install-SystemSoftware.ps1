@@ -1,4 +1,4 @@
-. .\functions.ps1
+. $PSScriptRoot\functions.ps1
 
 # Must be run from w/in Powershell (Core)
 Install-Module Microsoft.WinGet.Client -Scope AllUsers -AcceptLicense -AllowClobber -Force

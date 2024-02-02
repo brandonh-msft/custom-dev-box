@@ -1,6 +1,6 @@
 param([String]$azureFilesKey, [string]$account="squadstorage", [string]$share="software")
 
-. .\functions.ps1
+. $PSScriptRoot\functions.ps1
 
 pwsh -MTA -noni -nop -ex Unrestricted -File c:\scripts\Install-SystemSoftware.ps1
 

@@ -1,4 +1,4 @@
-. .\functions.ps1
+. $PSScriptRoot\functions.ps1
 
 Install-PackageWithStatus -packageId Postman.Postman -packageName "Postman"
 Install-PackageWithStatus -packageId Microsoft.DevHome -packageName "Dev Home"

@@ -1,4 +1,4 @@
-. .\functions.ps1
+. $PSScriptRoot\functions.ps1
 
 Write-Output "Powershell edition: $($PSVersionTable.PSEdition)"
 
@@ -8,14 +8,16 @@ Start-WithStatus "Creating DevDrive" {
     & $PSScriptRoot\Create-DevDrive.ps1 -DriveLetter 'E' # Because D is already taken by the DVD drive
 }
 
-try {
+try
+{
     Write-Host "Checking for PowerShell Core..."
 
     pwsh -v
 
     Write-Host "PowerShell Core is installed."
 }
-catch {
+catch
+{
     Write-Host "PowerShell Core is not installed. Installing ..."
     Start-WithStatus "Installing PowerShell Core" {
         # Get the latest download URL
