@@ -88,4 +88,4 @@ output storageAccountName string = rgDefinition.outputs.storageAccountName
 output projectName string = rgDefinition.outputs.projectName
 output projectResourceId string = rgDefinition.outputs.projectResourceId
 output devCenterName string = rgDefinition.outputs.devCenterName
-output resourceGroupName string = rg.name
+output resourceGroupName string = rgDefinition.outputs.resourceGroupName
