@@ -21,13 +21,13 @@ Start-WithStatus "Adding S: mount scheduled task" {
 }
 
 Start-WithStatus "Adding DevDrive mount scheduled task" { 
-    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-c \"Mount-VHD -Path c:\devdrive.vhdx\""
+    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-c `"Mount-VHD -Path c:\devdrive.vhdx`""
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users" -RunLevel Highest
     $Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew
     $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
     Register-ScheduledTask -TaskName "Mount Dev Drive" -InputObject $Task
 }
 
-Start-WithStatus "Cleaning up desktop" { rm -Force C:\Users\Public\Desktop\*.lnk }
+Start-WithStatus "Cleaning up desktop" { Remove-Item -Force C:\Users\Public\Desktop\*.lnk }
 # Start-WithStatus "Removing DVD drive from the system" { Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\cdrom -Name Start -Value 4 -Type DWord }
 Start-WithStatus "Disabling Reserved Storage" { DISM.exe /Online /Set-ReservedStorageState /State:Disabled }
