@@ -7,8 +7,6 @@ param([string]$taskName)
 Write-Host "Unpinning Taskbar things"
 UnpinFrom-Taskbar "Microsoft Store"
 
-& $PSScriptRoot\Customize-Taskbar.ps1 -RemoveTaskView -RemoveChat -StartMorePins
-
 Write-Host "Pinning apps to Start"
 PinTo-Start "Visual Studio 2022"
 PinTo-Start "Visual Studio Code"
