@@ -1,0 +1,3 @@
+[submodule "vdot"]
+	path = vdot
+	url = https://github.com/brandonh-msft/Virtual-Desktop-Optimization-Tool.git
