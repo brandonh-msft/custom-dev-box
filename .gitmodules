@@ -1,3 +1,6 @@
 [submodule "vdot"]
 	path = vdot
 	url = https://github.com/brandonh-msft/Virtual-Desktop-Optimization-Tool.git
+[submodule "avd"]
+	path = avd
+	url = https://brandonh-msft@github.com/brandonh-msft/dev-box-psscripts.git
