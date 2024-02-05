@@ -9,14 +9,12 @@ function Write-Status {
     }
 }
 
-function Install-PackageWithStatus {
-    param (
+function Install-PackageWithStatus (
         [Parameter(Mandatory = $true)]
         [string]$packageName,
         [Parameter(Mandatory = $true)]
         [string]$packageId
-    )
-
+    ) {
     Start-WithStatus "Installing $packageName" { Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id $packageId | Write-Status }
 }
 
@@ -29,18 +27,6 @@ function Start-WithStatus (
     Write-Host "$status..."
     & $scriptBlock
     Write-Host "$status - Done."
-}
-
-function Start-WithStatus (
-    [string]$appname
-) { 
-    try {
-    ((New-Object -Com Shell.Application).NameSpace('shell:::{4234d49b-0245-4df3-b780-3893943456e1}').Items() | ? { $_.Name -eq $appname }).Verbs() | ? { $_.Name.replace('&', '') -match 'Unpin from Taskbar' } | % { $_.DoIt() }
-        return "App '$appname' unpinned from Taskbar"
-    }
-    catch {
-        Write-Error "Error Unpinning App!"
-    } 
 }
 
 function UnpinFrom-Taskbar ([string]$appname) {
