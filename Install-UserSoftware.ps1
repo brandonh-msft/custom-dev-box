@@ -1,3 +1,3 @@
 . $PSScriptRoot\functions.ps1
 
-Install-PackageWithStatus -packageId Postman.Postman -packageName "Postman"
+Install-PackageWithStatus -packageId Postman.Postman -packageName "Postman" -user
