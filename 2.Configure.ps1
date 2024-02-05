@@ -13,7 +13,7 @@ Start-WithStatus "Adding One Time Setup (Elevated) scheduled task" {
     Register-ScheduledTask -TaskName "One Time Setup (Elevated)" -InputObject $Task
 }
 
-Start-WithStatus "Adding One Time Setup (Elevated) scheduled task" { 
+Start-WithStatus "Adding One Time Setup scheduled task" { 
     $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Apply-OneTimeUserSetup.ps1 -taskName 'One Time Setup'"
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users"
     $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
