@@ -3,7 +3,7 @@
 Write-Output "Powershell edition: $($PSVersionTable.PSEdition)"
 
 Start-WithStatus "Applying Timezone Redirecting settings" { & $PSScriptRoot\avd\TimezoneRedirection.ps1 }
-Start-WithStatus "Applying Windows Optimizations" { & $PSScriptRoot\vdot\Windows_VDOT.ps1 -Optimizations All -AdvancedOptimizations 'Edge,RemoveLegacyIE' -AcceptEULA }
+Start-WithStatus "Applying Windows Optimizations" { & $PSScriptRoot\vdot\Windows_VDOT.ps1 -Optimizations All -AdvancedOptimizations Edge,RemoveLegacyIE -AcceptEULA }
 Start-WithStatus "Creating DevDrive" { 
     & $PSScriptRoot\Create-DevDrive.ps1 -DriveLetter 'E' # Because D is already taken by the DVD drive
 }
