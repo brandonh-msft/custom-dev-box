@@ -259,7 +259,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2023-07-01
         name: 'Clone scripts'
         type: 'PowerShell'
         inline: [
-          'git clone https://github.com/brandonh-msft/custom-dev-box.git c:\\scripts --depth 1 --single-branch --sparse -q'
+          'git clone https://github.com/brandonh-msft/custom-dev-box.git c:\\scripts --single-branch --recursive --depth 1 --shallow-submodules --sparse -q'
           'cd c:\\scripts'
           'git log -q'
         ]
