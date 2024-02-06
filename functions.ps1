@@ -105,3 +105,15 @@ function PinTo-Start (
     }
 }
   
+function Set-RegistryKeyValue([string]$keyPath, [string]$valueName, [string]$valueData)
+{
+    try
+    {
+        Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+        return "Registry key '$keyPath' value '$valueName' set to '$valueData'"
+    }
+    catch
+    {
+        Write-Error "Error setting registry key '$keyPath' value '$valueName' to '$valueData': $($_.Exception.Message)"
+    }
+}
