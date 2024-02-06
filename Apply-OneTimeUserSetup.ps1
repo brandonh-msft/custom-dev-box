@@ -12,10 +12,12 @@ UnpinFrom-Taskbar "Microsoft Store"
 # Disable the scheduled task
 $taskExists = Get-ScheduledTask | Where-Object { $_.TaskName -eq $taskName }
 
-if ($taskExists) {
+if ($taskExists)
+{
     Disable-ScheduledTask -TaskName $taskName
     Write-Output "Task '$taskName' has been disabled."
 }
-else {
+else
+{
     Write-Output "Task '$taskName' does not exist."
 }
