@@ -15,15 +15,12 @@ param (
     [switch]$RunForExistingUsers
 )
 
-[string]$RegValueName = "CustomizeTaskbar"
+. .\functions.ps1
+
+[string]$RegName = "CustomizeTaskbar"
 [string]$FullRegKeyName = "HKLM:\SOFTWARE\ccmexec\" 
 
-# Create registry value if it doesn't exist
-If (!(Test-Path $FullRegKeyName)) {
-    New-Item -Path $FullRegKeyName -type Directory -force 
-    }
-
-New-itemproperty $FullRegKeyName -Name $RegValueName -Value "1" -Type STRING -Force
+Set-RegistryKeyValue -Path $FullRegKeyName -Name $RegName -Value "1"
 
 REG LOAD HKLM\Default C:\Users\Default\NTUSER.DAT
 
