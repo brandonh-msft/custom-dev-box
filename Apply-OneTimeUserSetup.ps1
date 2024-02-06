@@ -9,13 +9,6 @@ Write-Output "Executing one-time user setup..."
 Write-Host "Unpinning Taskbar things"
 UnpinFrom-Taskbar "Microsoft Store"
 
-Write-Host "Pinning apps to Start"
-PinTo-Start "Visual Studio 2022"
-PinTo-Start "Visual Studio Code"
-PinTo-Start "Postman"
-PinTo-Start "Dev Home"
-PinTo-Start "Docker Desktop"
-
 # Disable the scheduled task
 $taskExists = Get-ScheduledTask | Where-Object { $_.TaskName -eq $taskName }
 
