@@ -2,6 +2,8 @@ param([string]$taskName)
 
 . $PSScriptRoot\functions.ps1
 
+Write-Output "Executing one-time user setup..."
+
 & $PSScriptRoot\Install-UserSoftware.ps1
 
 Write-Host "Unpinning Taskbar things"

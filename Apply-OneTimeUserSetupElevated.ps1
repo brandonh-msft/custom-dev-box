@@ -2,6 +2,8 @@ param([string]$taskName)
 
 . $PSScriptRoot\functions.ps1
 
+Write-Output "Executing elevated one-time user setup..."
+
 # Install Ubuntu distro on wsl
 wsl --install -d Ubuntu -n
 

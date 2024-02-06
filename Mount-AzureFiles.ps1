@@ -1,5 +1,7 @@
 param([string]$key, [string]$account="squadstorage", [string]$share="software", [string]$driveletter="S")
 
+Write-Output "Mounting Azure Files storage (${account}.file.core.windows.net/${share} -> ${driveletter}:)..."
+
 $connectTestResult = Test-NetConnection -ComputerName "${account}.file.core.windows.net" -Port 445
 if ($connectTestResult.TcpTestSucceeded) {
     # Save the password so the drive will persist on reboot
