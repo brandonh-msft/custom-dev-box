@@ -8,16 +8,15 @@ This repository contains the necessary files & scripts to create a custom image 
 
 * Applies Timezone redirection settings so local time is redirected to the remote machine
 * Applies various Windows Optimizations (see AVD Optimizations repo for more detail)
-* Creates a DevDrive VHDX and mounts it to the remote machine (`E:), redirecting all package caches (npm, maven, nuget, etc.) to the Dev Drive
+* Creates a DevDrive VHDX and mounts it to the remote machine (`E:`), redirecting all package caches (npm, maven, nuget, etc.) to the Dev Drive
 
 `2.Configure.ps1`
 
 * Installs [various developer tools](Install-SystemSoftware.ps1) system-wide
-* Sets up 3 scheduled tasks on the remote machine:
-  1. One-time setup, [installs more software](Install-UserSoftware.ps1) as the logged on User, then disables this task
-  1. Mounts a remote Azure File Share as the 'S:' drive on User login
-  1. Mounts the DevDrive on User login
-* Removes all files from the Desktop (.lnk's created by various installers)
+* Sets up a RunOnce entry in the registry that [installs more software](Apply-OneTimeUserSetup.ps1) upon user's first login
+* Sets up 2 scheduled tasks on the remote machine to:
+  1. Mount a remote Azure File Share as the 'S:' drive on User login
+  1. Mount the DevDrive on User login
 * Disables 'Reserved Storage' on the VM
 
 The other files in the root are used by the above two scripts. This repo (root only) is cloned to the remote VM at `c:\scripts` during the image creation process. If you wish, you can delete it after logging into the Dev Box.
@@ -53,5 +52,7 @@ where
 
 ## Customizing
 
-Feel free to customize any software installations (machine or user) by modifying the `Install-SystemSoftware.ps1` and `Install-UserSoftware.ps1` scripts accordingly.
+Feel free to customize any software installations (machine or user) or Windows configuration by modifying the `Install-SystemSoftware.ps1` and `Apply-OneTimeUserSetup.ps1` scripts accordingly.
 > **WARNING**: Testing your changes takes a really long time; Image Builder Templates take anywhere from 1-4hr to complete.
+
+You can read more about this solution on my blog [here](https://netitude.bc3tech.net/2024/02/06/microsoft-dev-box-make-it-your-own/).
