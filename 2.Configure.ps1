@@ -5,33 +5,34 @@ param([String]$azureFilesKey, [string]$account="squadstorage", [string]$share="s
 pwsh -MTA -noni -nop -ex Unrestricted -File c:\scripts\Install-SystemSoftware.ps1
 
 $Trigger = New-ScheduledTaskTrigger -AtLogon
-$Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
+$SettingsNotHidden = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
+$SettingsHidden = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable -Hidden
 Start-WithStatus "Adding One Time Setup (Elevated) scheduled task" { 
     $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Apply-OneTimeUserSetupElevated.ps1 -taskName 'One Time Setup (Elevated)'"
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users" -RunLevel Highest
-    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
+    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $SettingsNotHidden
     Register-ScheduledTask -TaskName "One Time Setup (Elevated)" -InputObject $Task
 }
 
 Start-WithStatus "Adding One Time Setup scheduled task" { 
-    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Apply-OneTimeUserSetup.ps1 -taskName 'One Time Setup'"
+    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Apply-OneTimeUserSetup.ps1"
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users"
-    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
+    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $SettingsNotHidden
     Register-ScheduledTask -TaskName "One Time Setup" -InputObject $Task
 }
 
 Start-WithStatus "Adding S: mount scheduled task" { 
     $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Mount-AzureFiles.ps1 -key $azureFilesKey -account $account -share $share"
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users"
-    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
+    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $SettingsHidden
     Register-ScheduledTask -TaskName "Mount Squad Software storage" -InputObject $Task
 }
 
 Start-WithStatus "Adding DevDrive mount scheduled task" { 
     $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-c `"Mount-VHD -Path c:\devdrive.vhdx`""
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users" -RunLevel Highest
-    $Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew
-    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
+    $SettingsNotHidden = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew
+    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $SettingsHidden
     Register-ScheduledTask -TaskName "Mount Dev Drive" -InputObject $Task
 }
 
