@@ -35,6 +35,5 @@ Start-WithStatus "Adding DevDrive mount scheduled task" {
     Register-ScheduledTask -TaskName "Mount Dev Drive" -InputObject $Task
 }
 
-Start-WithStatus "Cleaning up desktop" { Remove-Item -Force C:\Users\Public\Desktop\*.lnk }
 # Start-WithStatus "Removing DVD drive from the system" { Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Services\cdrom -Name Start -Value 4 -Type DWord }
 Start-WithStatus "Disabling Reserved Storage" { DISM.exe /Online /Set-ReservedStorageState /State:Disabled }
