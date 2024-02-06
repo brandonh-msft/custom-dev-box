@@ -4,7 +4,7 @@ param([string]$taskName)
 
 Write-Output "Executing one-time user setup..."
 
-& $PSScriptRoot\Install-UserSoftware.ps1
+Install-PackageWithStatus -packageId Postman.Postman -packageName "Postman" -user
 
 Write-Host "Unpinning Taskbar things"
 UnpinFrom-Taskbar "Microsoft Store"
