@@ -8,7 +8,7 @@ $Trigger = New-ScheduledTaskTrigger -AtLogon
 $SettingsNotHidden = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
 $SettingsHidden = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable -Hidden
 Start-WithStatus "Adding One Time Setup (Elevated) scheduled task" { 
-    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Apply-OneTimeUserSetupElevated.ps1 -taskName 'One Time Setup (Elevated)'"
+    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Apply-OneTimeUserSetupElevated.ps1 -elevatedTaskName 'One Time Setup (Elevated)' -unelevatedTaskName 'One Time Setup'"
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users" -RunLevel Highest
     $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $SettingsNotHidden
     Register-ScheduledTask -TaskName "One Time Setup (Elevated)" -InputObject $Task

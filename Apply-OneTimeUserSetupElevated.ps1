@@ -1,4 +1,4 @@
-param([string]$taskName)
+param([string]$elevatedTaskName, [string]$unelevatedTaskName)
 
 . $PSScriptRoot\functions.ps1
 
@@ -20,13 +20,28 @@ Start-WithStatus "Updating WinGet packages" { $(Get-WinGetPackage | Where-Object
 
 & $PSScriptRoot\Customize-Taskbar.ps1 -RemoveTaskView -RemoveChat -StartMorePins
 
-# Disable the scheduled task
-$taskExists = Get-ScheduledTask | Where-Object { $_.TaskName -eq $taskName }
+# Disable the elevated scheduled task
+$taskExists = Get-ScheduledTask -TaskName $elevatedTaskName
 
-if ($taskExists) {
+if ($taskExists)
+{
     Disable-ScheduledTask -TaskName $taskName
     Write-Output "Task '$taskName' has been disabled."
 }
-else {
+else
+{
+    Write-Output "Task '$taskName' does not exist."
+}
+
+# Disable the user-level scheduled task (user level task can't do this on its own as elevation is required)
+$taskExists = Get-ScheduledTask -TaskName $unelevatedTaskName
+
+if ($taskExists)
+{
+    Disable-ScheduledTask -TaskName $taskName
+    Write-Output "Task '$taskName' has been disabled."
+}
+else
+{
     Write-Output "Task '$taskName' does not exist."
 }
