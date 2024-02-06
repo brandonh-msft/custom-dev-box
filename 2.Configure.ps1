@@ -4,7 +4,7 @@ param([String]$azureFilesKey, [string]$account = "squadstorage", [string]$share 
 
 Start-WithStatus "Installing system-level software packages" { pwsh -MTA -noni -nop -ex Unrestricted -File c:\scripts\Install-SystemSoftware.ps1 }
 Start-WithStatus "Adding One-Time DevSquad Dev Box Setup to RunOnce" {
-    Set-RegistryKeyValue -Path "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce" -Name "One-Time DevSquad Dev Box Setup" -Value "pwsh -MTA -noni -nop -ex Unrestricted -File c:\\scripts\\Apply-OneTimeUserSetup.ps1"
+    Set-RegistryKeyValue -keyPath "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce" -valueName "One-Time DevSquad Dev Box Setup" -valueData "pwsh -MTA -noni -nop -ex Unrestricted -c `"& c:\\scripts\\Apply-OneTimeUserSetup.ps1 | Tee-Object c:\\scripts\\Apply-OneTimeUserSetup.log`""
 }
 
 $Trigger = New-ScheduledTaskTrigger -AtLogon
