@@ -7,6 +7,7 @@ Write-Output "Executing elevated one-time user setup..."
 # Install Ubuntu distro on wsl
 wsl --install -d Ubuntu -n
 
+Install-PackageWithStatus -packageId 7zip.7zip -packageName "7Zip"
 Install-PackageWithStatus -packageId Microsoft.DevHome -packageName "Dev Home" -cli -user
 Install-PackageWithStatus -packageId 9MV8F79FGXTR -packageName "Dev Home Azure Extension" -user
 Install-PackageWithStatus -packageId 9NZCC27PR6N6 -packageName "Dev Home GitHub Extension" -user

@@ -5,7 +5,6 @@ Install-Module Microsoft.WinGet.Client -Scope AllUsers -AcceptLicense -AllowClob
 Import-Module Microsoft.WinGet.Client -Force -Global
 
 Install-PackageWithStatus -packageId Microsoft.VisualStudioCode -packageName "VS Code"
-Install-PackageWithStatus -packageId 7zip.7zip -packageName "7Zip"
 Install-PackageWithStatus -packageId Docker.DockerDesktop -packageName "Docker Desktop"
 Install-PackageWithStatus -packageId GoLang.Go -packageName "Go"
 Install-PackageWithStatus -packageId 'Notepad++.Notepad++' -packageName "Notepad++"
