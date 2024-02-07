@@ -98,22 +98,20 @@ function UnpinFrom-Taskbar ([string]$appname)
     }
 }
   
-function Set-RegistryKeyValue([string]$Path, [string]$Name, [string]$Value)
-{
-    try
-    {
-        $regKey = Get-Item -Path $Path
-        if (-not $regKey)
-        {
+function Set-RegistryKeyValue([string]$Path, [string]$Name, $Value) {
+    try {
+        if (!(Test-Path $Path)) {
             $regKey = New-Item -Path $Path
+        }
+        else {
+            $regKey = Get-Item -Path $Path
         }
     
         $regKey | Set-ItemProperty -Name $Name -Value $Value -Force > $null
 
         return "Registry key '$Path' value '$Name' set to '$Value'"
     }
-    catch
-    {
+    catch {
         Write-Error "Error setting registry key '$Path' value '$Name' to '$Value': $($_.Exception.Message)"
     }
 }
