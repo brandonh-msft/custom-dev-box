@@ -33,7 +33,7 @@ function Install-PackageWithStatus (
                 }
                 else
                 {
-                    Install-WinGetPackage -Scope UserOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id $packageId | Write-Status 
+                    ($psResult = Install-WinGetPackage -Scope UserOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id $packageId) | Write-Status 
                 }
             }
             else
@@ -44,9 +44,27 @@ function Install-PackageWithStatus (
                 }
                 else
                 {
-                    Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id $packageId | Write-Status
+                    ($psResult = Install-WinGetPackage -Scope SystemOrUnknown -Mode Silent -MatchOption EqualsCaseInsensitive -Force -Id $packageId) | Write-Status
                 }
-            } 
+            }
+
+            if ($cli -and $LASTEXITCODE -ne 0)
+            {
+                Write-Warning "WinGet CLI returned exit code $LASTEXITCODE - attempting install without scope"
+                winget install --accept-package-agreements --accept-source-agreements --disable-interactivity --id $packageId -h
+            }
+            elseif (-not $cli -and $psResult.Status -ne 'Ok')
+            {
+                Write-Warning "WinGet Powershell returned status '$($psResult.Status)' - attempting install with CLI"
+                if ($user)
+                {
+                    Install-PackageWithStatus -packageName $packageName -packageId $packageId -cli -user
+                }
+                else
+                {
+                    Install-PackageWithStatus -packageName $packageName -packageId $packageId -cli
+                }
+            }
         }
         catch
         {
