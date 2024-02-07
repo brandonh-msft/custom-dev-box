@@ -23,7 +23,7 @@ Start-WithStatus "Cleaning up Taskbar" {
     & $PSScriptRoot\Customize-Taskbar.ps1 -RemoveTaskView -RemoveChat -RunForExistingUsers
 
     # Hide the 'Search' box
-    Set-RegistryKeyValue -Path "HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Search" -Name "SearchBoxTaskbarMode" -Value 0
+    Set-RegistryKeyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "SearchBoxTaskbarMode" -Value 0
 }
 
 Start-WithStatus "Configuring Start Menu" {
