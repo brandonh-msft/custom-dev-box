@@ -15,7 +15,7 @@ param (
     [switch]$RunForExistingUsers
 )
 
-. .\functions.ps1
+. $PSScriptRoot\functions.ps1
 
 [string]$RegName = "CustomizeTaskbar"
 [string]$FullRegKeyName = "HKLM:\SOFTWARE\ccmexec\" 
