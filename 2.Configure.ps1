@@ -3,11 +3,16 @@ param([String]$azureFilesKey, [string]$account = "squadstorage", [string]$share 
 . $PSScriptRoot\functions.ps1
 
 Start-WithStatus "Installing system-level software packages" { pwsh -MTA -noni -nop -ex Unrestricted -File c:\scripts\Install-SystemSoftware.ps1 }
-Start-WithStatus "Adding One-Time DevSquad Dev Box Setup to RunOnce" {
-    Set-RegistryKeyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" -Name "One-Time DevSquad Dev Box Setup" -Value "pwsh -MTA -noni -nop -ex Unrestricted -c `"& { c:\scripts\Apply-OneTimeUserSetup.ps1 | Tee-Object c:\scripts\Apply-OneTimeUserSetup.log } `""
-}
 
 $Trigger = New-ScheduledTaskTrigger -AtLogon
+Start-WithStatus "Creating One-Time DevSquad Dev Box Setup scheduled task" { 
+    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-MTA -noni -nop -ex Unrestricted -c `"& { c:\scripts\Apply-OneTimeUserSetup.ps1 | Tee-Object c:\scripts\Apply-OneTimeUserSetup.log ; Disable-ScheduledTask 'One-Time DevSquad Dev Box Setup' } `""
+    $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users"
+    $Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
+    $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
+    Register-ScheduledTask -TaskName "One-Time DevSquad Dev Box Setup" -InputObject $Task
+}
+
 Start-WithStatus "Adding S: mount scheduled task" { 
     $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Mount-AzureFiles.ps1 -key $azureFilesKey -account $account -share $share"
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users"
