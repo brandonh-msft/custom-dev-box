@@ -11,7 +11,7 @@ Install-PackageWithStatus -packageId 9NZCC27PR6N6 -packageName "Dev Home GitHub 
 Install-PackageWithStatus -packageId Hashicorp.Terraform -packageName "Terraform" -user
 Install-PackageWithStatus -packageId Postman.Postman -packageName "Postman" -user
 
-Start-WithStatus "Updating WinGet packages" { $(Get-WinGetPackage | Where-Object { $_.IsUpdateAvailable -eq $true -and $_.Name -ne 'Microsoft 365 Apps for enterprise' }) | Update-WinGetPackage -Mode Silent }
+Start-WithStatus "Updating WinGet packages" { $(Get-WinGetPackage | Where-Object { $_.IsUpdateAvailable -eq $true -and $_.Id -ne 'Microsoft.Office' }) | Update-WinGetPackage -Mode Silent }
 
 Start-WithStatus "Cleaning up Taskbar" {
 
@@ -21,6 +21,10 @@ Start-WithStatus "Cleaning up Taskbar" {
     # Start-WithStatus "Cleaning up desktop" { Remove-Item "$($env:USERPROFILE)\Desktop\*.lnk" }
 
     & $PSScriptRoot\Customize-Taskbar.ps1 -RemoveSearch -RemoveTaskView -StartMorePins -RunForExistingUsers
+
+    # Combine buttons when full
+    $registryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+    Set-RegistryKeyValue -Path $registryPath -Name "TaskbarGlomLevel" -Value 1
 }
 
 Start-WithStatus "Configuring Start Menu" {
@@ -37,7 +41,7 @@ Start-WithStatus "Configuring Start Menu" {
     Set-RegistryKeyValue -Path $registryPath -Name "Start_ShowRecentDocs" -Value 1
 
     # Don't show recommendations
-    Set-RegistryKeyValue -Path $registryPath -Name "Start_ShowSuggested" -Value 0
+    Set-RegistryKeyValue -Path $registryPath -Name "Start_IrisRecommendations" -Value 0
 }
 
 Start-WithStatus "Configuring theme" {
