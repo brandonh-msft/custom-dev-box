@@ -1,6 +1,6 @@
 . $PSScriptRoot\functions.ps1
 
-Write-Output "Executing one-time user setup..."
+Write-Output "Executing one-time user setup ($($env:USERNAME))..."
 
 Start-WithStatus "Installing Ubuntu on WSL" { wsl --install -d Ubuntu -n }
 
