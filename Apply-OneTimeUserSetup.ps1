@@ -20,10 +20,7 @@ Start-WithStatus "Cleaning up Taskbar" {
     # Start-WithStatus "Cleaning up desktop" { Remove-Item C:\Users\Public\Desktop\*.lnk }
     # Start-WithStatus "Cleaning up desktop" { Remove-Item "$($env:USERPROFILE)\Desktop\*.lnk" }
 
-    & $PSScriptRoot\Customize-Taskbar.ps1 -RemoveTaskView -RemoveChat -RunForExistingUsers
-
-    # Hide the 'Search' box
-    Set-RegistryKeyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name "SearchBoxTaskbarMode" -Value 0
+    & $PSScriptRoot\Customize-Taskbar.ps1 -RemoveSearch -RemoveTaskView -StartMorePins -RunForExistingUsers
 }
 
 Start-WithStatus "Configuring Start Menu" {

@@ -81,7 +81,7 @@ REG UNLOAD HKLM\Default
 if ($PSBoundParameters.ContainsKey('RunForExistingUsers')) {
     Write-Host "RunForExistingUsers parameter specified."
     $UserProfiles = Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*" |
-    Where-Object { $_.PSChildName -match "S-1-5-21-(\d+-?){4}$" } |
+    Where-Object { $_.PSChildName -match "S-1-(\d+-?){6}$" } |
     Select-Object @{Name = "SID"; Expression = { $_.PSChildName } }, @{Name = "UserHive"; Expression = { "$($_.ProfileImagePath)\NTuser.dat" } }
 
     # Loop through each profile on the machine
