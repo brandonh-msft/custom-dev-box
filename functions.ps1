@@ -81,7 +81,7 @@ function Start-WithStatus (
 )
 {
     Write-Host "$status..."
-    & $scriptBlock
+    & $scriptBlock > $null
     Write-Host "$status - Done."
 }
 

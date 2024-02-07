@@ -63,7 +63,6 @@ Start-WithStatus "Configuring theme" {
     Set-RegistryKeyValue -Path $registryPath -Name "ColorPrevalence" -Value 1
 
     # Set the Accent Color to Automatic
-    $registryPathDeskto = 
     Set-RegistryKeyValue -Path "HKCU:\Control Panel\Desktop" -Name "AutoColorization" -Value 1
 }
 
