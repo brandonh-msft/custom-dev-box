@@ -57,33 +57,31 @@ Start-WithStatus "Configuring theme" {
     Set-RegistryKeyValue -Path $registryPath -Name "ColorPrevalence" -Value 2
 
     # Turn on Transparency Effects
-    $registryPathDWM = "HKCU:\Software\Microsoft\Windows\DWM"
-    Set-RegistryKeyValue -Path $registryPathDWM -Name "ForceEffectMode" -Value 2
+    $registryPath = "HKCU:\Software\Microsoft\Windows\DWM"
+    Set-RegistryKeyValue -Path $registryPath -Name "ForceEffectMode" -Value 2
     # Turn on the Accent color on title bars and window borders
-    Set-RegistryKeyValue -Path $registryPathDWM -Name "ColorPrevalence" -Value 1
+    Set-RegistryKeyValue -Path $registryPath -Name "ColorPrevalence" -Value 1
 
     # Set the Accent Color to Automatic
-    $registryPathDesktop = "HKCU:\Control Panel\Desktop"
-    Set-RegistryKeyValue -Path $registryPathDesktop -Name "AutoColorization" -Value 1
+    $registryPathDeskto = 
+    Set-RegistryKeyValue -Path "HKCU:\Control Panel\Desktop" -Name "AutoColorization" -Value 1
 }
 
 Start-WithStatus "Configuring Multitasking settings" {
     # Open the registry
-    $registryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer"
+    $registryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
 
     # Do not show tabs in Alt+Tab view
-    Set-RegistryKeyValue -Path "$registryPath\Advanced" -Name "MultiTaskingAltTabFilter" -Value 3
+    Set-RegistryKeyValue -Path $registryPath -Name "MultiTaskingAltTabFilter" -Value 3
 
     # Enable window shake
-    Set-RegistryKeyValue -Path "$registryPath\Advanced" -Name "DisallowShaking" -Value 0
+    Set-RegistryKeyValue -Path $registryPath -Name "DisallowShaking" -Value 0
 }
 
 Start-WithStatus "Configuring other Windows Settings" {
-    # Open the registry
-    $RegistryPath = "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon"
 
     # Save state & restart apps after reboot
-    Set-RegistryKeyValue -Path $RegistryPath -Name "RestartApps" -Value 1
+    Set-RegistryKeyValue -Path "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name "RestartApps" -Value 1
 
     # Turn off Developer Mode
     Set-RegistryKeyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowDevelopmentWithoutDevLicense" -Value 0
