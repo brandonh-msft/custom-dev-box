@@ -88,9 +88,6 @@ Start-WithStatus "Configuring other Windows Settings" {
     # Turn off Developer Mode
     Set-RegistryKeyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowDevelopmentWithoutDevLicense" -Value 0
 
-    # Show hidden files, folders, and drives
-    Set-RegistryKeyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Value 1
-
     # Show protected operating system files (Recommended)
     Set-RegistryKeyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Value 1
 
