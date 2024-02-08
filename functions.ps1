@@ -58,11 +58,11 @@ function Install-PackageWithStatus (
                 Write-Warning "WinGet Powershell returned status '$($psResult.Status)' - attempting install with CLI"
                 if ($user)
                 {
-                    Install-PackageWithStatus -packageName $packageName -packageId $packageId -cli -user
+                    Install-PackageWithStatus -packageName "$packageName (no-scope)" -packageId $packageId -cli -user
                 }
                 else
                 {
-                    Install-PackageWithStatus -packageName $packageName -packageId $packageId -cli
+                    Install-PackageWithStatus -packageName "$packageName (no-scope)" -packageId $packageId -cli
                 }
             }
         }
