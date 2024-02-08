@@ -61,7 +61,8 @@ resource pools 'Microsoft.DevCenter/projects/pools@2023-10-01-preview' = [for po
 }]
 
 resource schedules 'Microsoft.DevCenter/projects/pools/schedules@2023-10-01-preview' = [for poolLocation in poolLocations: {
-  name: '${project.name}/win-blank-${poolLocation.location}/${common.defaultScheduleName}'  // warning is invalid - can't use 'parent' w/in a loop
+  #disable-next-line use-parent-property // warning is invalid - can't use 'parent' w/in a loop
+  name: '${project.name}/win-devready-${poolLocation.location}/${common.defaultScheduleName}' 
   dependsOn: pools
   properties: common.makeScheduleFor(poolLocation.timeZone)
 }]
