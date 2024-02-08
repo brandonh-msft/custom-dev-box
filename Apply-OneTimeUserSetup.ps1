@@ -1,5 +1,12 @@
 . $PSScriptRoot\functions.ps1
 
+$script = {
+    Add-Type -AssemblyName System.Windows.Forms
+    [System.Windows.Forms.MessageBox]::Show('Your Dev Box is now completing setup. Do not close any Powershell/Terminal windows. Upon completion, it will reboot.', 'Continuing Setup...')
+}
+
+Start-Process pwsh -ArgumentList "-w Hidden -NoProfile -ExecutionPolicy Bypass -Command & {$script}"
+
 Write-Output "Executing one-time user setup ($($env:USERNAME))..."
 
 Start-WithStatus "Installing Ubuntu on WSL" { wsl --install -d Ubuntu -n }
@@ -92,5 +99,5 @@ Start-WithStatus "Configuring other Windows Settings" {
     Set-RegistryKeyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" -Name "TaskbarEndTask" -Value 1
 }
 
-# Restart the Explorer process for changes to take effect
-Stop-Process -Name explorer
+# Reboot to ensure everything takes effect. We noticed this was necessary for Docker & WSL to work properly
+shutdown /r /f /t 20
