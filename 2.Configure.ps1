@@ -6,7 +6,7 @@ Start-WithStatus "Installing system-level software packages" { pwsh -MTA -noni -
 
 $Trigger = New-ScheduledTaskTrigger -AtLogon
 Start-WithStatus "Creating One-Time DevSquad Dev Box Setup scheduled task" { 
-    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-MTA -noni -nop -ex Unrestricted -c `"& { c:\scripts\Apply-OneTimeUserSetup.ps1 | Tee-Object c:\scripts\Apply-OneTimeUserSetup.log ; Disable-ScheduledTask 'One-Time DevSquad Dev Box Setup' } `""
+    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-MTA -noni -nop -ex Unrestricted -w Minimized -c `"& { c:\scripts\Apply-OneTimeUserSetup.ps1 | Tee-Object c:\scripts\Apply-OneTimeUserSetup.log ; Disable-ScheduledTask 'One-Time DevSquad Dev Box Setup' } `""
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users" -RunLevel Highest
     $Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable
     $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
@@ -14,7 +14,7 @@ Start-WithStatus "Creating One-Time DevSquad Dev Box Setup scheduled task" {
 }
 
 Start-WithStatus "Adding S: mount scheduled task" { 
-    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "$PSScriptRoot\Mount-AzureFiles.ps1 -key $azureFilesKey -account $account -share $share"
+    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-w Hidden -c `"$PSScriptRoot\Mount-AzureFiles.ps1 -key $azureFilesKey -account $account -share $share`""
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users"
     $Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -RunOnlyIfNetworkAvailable -Hidden
     $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
@@ -22,7 +22,7 @@ Start-WithStatus "Adding S: mount scheduled task" {
 }
 
 Start-WithStatus "Adding DevDrive mount scheduled task" { 
-    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-c `"Mount-VHD -Path c:\devdrive.vhdx`""
+    $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument "-w Hidden -c `"Mount-VHD -Path c:\devdrive.vhdx`""
     $Principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\Users" -RunLevel Highest
     $Settings = New-ScheduledTaskSettingsSet -Compatibility Win8 -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew -Hidden
     $Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Principal $Principal -Settings $Settings
