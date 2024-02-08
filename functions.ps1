@@ -68,7 +68,22 @@ function Install-PackageWithStatus (
         }
         catch
         {
-            Write-Error "Error installing '$packageName': $($_.Exception.Message)"
+            if (-not $cli)
+            {
+                Write-Warning "Error installing '$packageName': $($_.Exception.Message) - attempting install with CLI"
+                if ($user)
+                {
+                    Install-PackageWithStatus -packageName "$packageName (cli)" -packageId $packageId -cli -user
+                }
+                else
+                {
+                    Install-PackageWithStatus -packageName "$packageName (cli)" -packageId $packageId -cli
+                }
+            }
+            else
+            {
+                Write-Error "Error installing '$packageName': $($_.Exception.Message)"
+            }
         }
     }
 }
@@ -98,12 +113,16 @@ function UnpinFrom-Taskbar ([string]$appname)
     }
 }
   
-function Set-RegistryKeyValue([string]$Path, [string]$Name, $Value) {
-    try {
-        if (!(Test-Path $Path)) {
+function Set-RegistryKeyValue([string]$Path, [string]$Name, $Value)
+{
+    try
+    {
+        if (!(Test-Path $Path))
+        {
             $regKey = New-Item -Path $Path
         }
-        else {
+        else
+        {
             $regKey = Get-Item -Path $Path
         }
     
@@ -111,7 +130,8 @@ function Set-RegistryKeyValue([string]$Path, [string]$Name, $Value) {
 
         return "Registry key '$Path' value '$Name' set to '$Value'"
     }
-    catch {
+    catch
+    {
         Write-Error "Error setting registry key '$Path' value '$Name' to '$Value': $($_.Exception.Message)"
     }
 }
