@@ -9,6 +9,9 @@ Start-Process pwsh -ArgumentList "-w Hidden -NoProfile -ExecutionPolicy Bypass -
 
 Write-Output "Executing one-time user setup ($($env:USERNAME))..."
 
+# Add the current user to docker-users
+Add-LocalGroupMember -Group 'docker-users' -Member $env:USERNAME
+
 Start-WithStatus "Installing Ubuntu on WSL" { wsl --install -d Ubuntu -n }
 
 Install-PackageWithStatus -packageId 7zip.7zip -packageName "7Zip" -user
