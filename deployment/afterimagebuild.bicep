@@ -12,9 +12,9 @@
   'westeurope'
   'westus3'
 ])
-param location string 
+param location string
 param devCenterName string
-param devCenterProjectName string 
+param devCenterProjectName string
 param poolLocations common.poolLocation[]
 
 // Yes, these are unused. But it allows us to use the same param file for main & afterimage, simplifying the deployment script
@@ -28,22 +28,37 @@ param imageTemplateName string = 'devbox-template'
 param deploymentSuffix string = ''
 param resourceGroupName string
 
+var namesAndSkus = [
+  {
+    name: 'DevReady-Win-VS-Sm-16cpu-64gbRAM-256GB'
+    sku: 'general_i_8c32gb256ssd_v2'
+  }
+  {
+    name: 'DevReady-Win-VS-Med-16cpu-64gbRAM-256GB'
+    sku: 'general_i_16c64gb256ssd_v2'
+  }
+  {
+    name: 'DevReady-Win-VS-Lg-16cpu-64gbRAM-256GB'
+    sku: 'general_i_32c128gb512ssd_v2'
+  }
+]
+
 resource devCenter 'Microsoft.DevCenter/devcenters@2023-04-01' existing = {
   name: devCenterName
 
-  resource devReadyBoxDefinition 'devboxdefinitions' = {
+  resource devboxdefinitions 'devboxdefinitions' = [for i in namesAndSkus: {
     location: location
-    name: 'DevReady-Win-VS-Med-16cpu-64gbRAM-256GB'
+    name: i.name
     properties: {
       hibernateSupport: 'Enabled'
       imageReference: {
         id: '${resourceId('Microsoft.DevCenter/devcenters/galleries', devCenter.name, 'devboximages')}/images/devbox'
       }
       sku: {
-        name: 'general_i_16c64gb256ssd_v2'
+        name: i.sku
       }
     }
-  }
+  }]
 }
 
 import * as common from 'common.bicep'
@@ -52,17 +67,19 @@ resource project 'Microsoft.DevCenter/projects@2023-10-01-preview' existing = {
   name: devCenterProjectName
 }
 
-resource pools 'Microsoft.DevCenter/projects/pools@2023-10-01-preview' = [for poolLocation in poolLocations: {
-  parent: project
-  location: location
-  name: 'win-devready-${poolLocation.location}'
-
-  properties: common.getPoolPropertiesFor(devCenter::devReadyBoxDefinition.name, [ poolLocation.location ])
+module poolDefinitions 'poolcollection.bicep' = [for i in namesAndSkus: {
+  name: i.name
+  params: {
+    resourceLocation: location
+    projectName: project.name
+    poolLocations: poolLocations
+    poolName: i.name
+  }
 }]
 
 resource schedules 'Microsoft.DevCenter/projects/pools/schedules@2023-10-01-preview' = [for poolLocation in poolLocations: {
   #disable-next-line use-parent-property // warning is invalid - can't use 'parent' w/in a loop
-  name: '${project.name}/win-devready-${poolLocation.location}/${common.defaultScheduleName}' 
-  dependsOn: pools
+  name: '${project.name}/win-devready-${poolLocation.location}/${common.defaultScheduleName}'
+  dependsOn: poolDefinitions
   properties: common.makeScheduleFor(poolLocation.timeZone)
 }]
