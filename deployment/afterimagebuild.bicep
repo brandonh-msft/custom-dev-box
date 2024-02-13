@@ -32,14 +32,20 @@ var namesAndSkus = [
   {
     name: 'DevReady-Win-VS-Sm-16cpu-64gbRAM-256GB'
     sku: 'general_i_8c32gb256ssd_v2'
+    size: 'small'
+    canHibernate: true
   }
   {
     name: 'DevReady-Win-VS-Med-16cpu-64gbRAM-256GB'
     sku: 'general_i_16c64gb256ssd_v2'
+    size: 'med'
+    canHibernate: true
   }
   {
     name: 'DevReady-Win-VS-Lg-16cpu-64gbRAM-256GB'
     sku: 'general_i_32c128gb512ssd_v2'
+    size: 'large'
+    canHibernate: false
   }
 ]
 
@@ -50,7 +56,7 @@ resource devCenter 'Microsoft.DevCenter/devcenters@2023-04-01' existing = {
     location: location
     name: i.name
     properties: {
-      hibernateSupport: 'Enabled'
+      hibernateSupport: i.canHibernate ? 'Enabled' : 'Disabled'
       imageReference: {
         id: '${resourceId('Microsoft.DevCenter/devcenters/galleries', devCenter.name, 'devboximages')}/images/devbox'
       }
@@ -68,18 +74,13 @@ resource project 'Microsoft.DevCenter/projects@2023-10-01-preview' existing = {
 }
 
 module poolDefinitions 'poolcollection.bicep' = [for i in namesAndSkus: {
-  name: i.name
+  name: '${i.name}-pool'
+  dependsOn: devCenter::devboxdefinitions
   params: {
     resourceLocation: location
     projectName: project.name
     poolLocations: poolLocations
-    poolName: i.name
+    poolName: 'win-devready-${i.size}'
+    devBoxDefinitionName: i.name
   }
-}]
-
-resource schedules 'Microsoft.DevCenter/projects/pools/schedules@2023-10-01-preview' = [for poolLocation in poolLocations: {
-  #disable-next-line use-parent-property // warning is invalid - can't use 'parent' w/in a loop
-  name: '${project.name}/win-devready-${poolLocation.location}/${common.defaultScheduleName}'
-  dependsOn: poolDefinitions
-  properties: common.makeScheduleFor(poolLocation.timeZone)
 }]

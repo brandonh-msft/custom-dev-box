@@ -136,19 +136,19 @@ resource devCenter 'Microsoft.DevCenter/devcenters@2023-04-01' = {
     }
   }
 
-  resource blankBoxDefinition 'devboxdefinitions' = {
+  resource devboxdefinitions 'devboxdefinitions' = [for i in namesAndSkus: {
     location: location
-    name: 'Blank-Win-VS-Med-16cpu-64gbRAM-256GB'
+    name: i.name
     properties: {
-      hibernateSupport: 'Enabled'
+      hibernateSupport: i.canHibernate ? 'Enabled' : 'Disabled'
       imageReference: {
         id: '${resourceId('Microsoft.DevCenter/devcenters/galleries', devCenter.name, 'Default')}/images/microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2'
       }
       sku: {
-        name: 'general_i_16c64gb256ssd_v2'
+        name: i.sku
       }
     }
-  }
+  }]
 }
 
 resource galleryDcManagedRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
@@ -162,7 +162,6 @@ resource galleryDcManagedRoleAssignment 'Microsoft.Authorization/roleAssignments
   scope: gallery
 }
 
-
 resource project 'Microsoft.DevCenter/projects@2023-10-01-preview' = {
   name: '${devCenterProjectName}${deploymentSuffix}'
   location: location
@@ -172,19 +171,37 @@ resource project 'Microsoft.DevCenter/projects@2023-10-01-preview' = {
   }
 }
 
-resource pools 'Microsoft.DevCenter/projects/pools@2023-10-01-preview' = [for poolLocation in poolLocations: {
-  parent: project
-  location: location
-  name: 'win-blank-${poolLocation.location}'
+var namesAndSkus = [
+  {
+    name: 'Blank-Win-VS-Sm-16cpu-64gbRAM-256GB'
+    sku: 'general_i_8c32gb256ssd_v2'
+    size: 'small'
+    canHibernate: true
+  }
+  {
+    name: 'Blank-Win-VS-Med-16cpu-64gbRAM-256GB'
+    sku: 'general_i_16c64gb256ssd_v2'
+    size: 'med'
+    canHibernate: true
+  }
+  {
+    name: 'Blank-Win-VS-Lg-16cpu-64gbRAM-256GB'
+    sku: 'general_i_32c128gb512ssd_v2'
+    size: 'large'
+    canHibernate: false
+  }
+]
 
-  properties: common.getPoolPropertiesFor(devCenter::blankBoxDefinition.name, [ poolLocation.location ])
-}]
-
-resource schedules 'Microsoft.DevCenter/projects/pools/schedules@2023-10-01-preview' = [for poolLocation in poolLocations: {
-  #disable-next-line use-parent-property // warning is invalid - can't use 'parent' w/in a loop
-  name: '${project.name}/win-blank-${poolLocation.location}/${common.defaultScheduleName}'
-  dependsOn: pools
-  properties: common.makeScheduleFor(poolLocation.timeZone)
+module poolDefinitions 'poolcollection.bicep' = [for i in namesAndSkus: {
+  name: '${i.name}-pool'
+  dependsOn: devCenter::devboxdefinitions
+  params: {
+    resourceLocation: location
+    projectName: project.name
+    poolLocations: poolLocations
+    poolName: 'win-blank-${i.size}'
+    devBoxDefinitionName: i.name
+  }
 }]
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
