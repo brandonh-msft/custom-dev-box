@@ -100,6 +100,9 @@ Start-WithStatus "Configuring other Windows Settings" {
 
     # Turn on 'End Task' for Taskbar icons
     Set-RegistryKeyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\TaskbarDeveloperSettings" -Name "TaskbarEndTask" -Value 1
+
+    # Show file extensions in Explorer
+    Set-RegistryKeyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Value 0
 }
 
 # Reboot to ensure everything takes effect. We noticed this was necessary for Docker & WSL to work properly
